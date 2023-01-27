@@ -1,5 +1,6 @@
 package controller;
 
+import hibernate.HibernateUtil;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -7,8 +8,10 @@ import javafx.scene.control.*;
 import model.Categories;
 import model.Lineup;
 import model.Models;
+import org.hibernate.Session;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -28,6 +31,9 @@ public class MainController implements Initializable {
     @FXML
     private Accordion accordion;
 
+    private Session session = HibernateUtil.getSessionFactory().openSession();
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -35,8 +41,10 @@ public class MainController implements Initializable {
         accordion.setExpandedPane(titledLineup);
         titledModels.setDisable(true);
 
+        List<Lineup> lineupList = session.createQuery("FROM Lineup").list();
+
         // Line up Select Section
-        comboBox.setItems(FXCollections.observableArrayList(Lineup.values()));
+        comboBox.setItems(FXCollections.observableArrayList(lineupList));
 
         // Evente Listener ComboBox
         comboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
@@ -49,27 +57,24 @@ public class MainController implements Initializable {
 
     public void treeReference(Lineup newValue){
 
-            //model.Lineup
+            List<Categories> categoriesList = session.createQuery(String.format("FROM Categories WHERE id_lineup = '%s'",newValue)).list();
 
+            //model.Lineup
             TreeItem setTreeView = new TreeItem<>(newValue);
             setTreeView.setExpanded(true);
 
             //model.Models
-            for(Categories cat: Categories.values()){
+            for(Categories cat: categoriesList){
 
-                if(cat.getLineup().equals(newValue)){
-                    TreeItem<Categories> categoryItem = new TreeItem<>(cat);
-                    setTreeView.getChildren().add(categoryItem);
+                TreeItem<Categories> categoryItem = new TreeItem<>(cat);
+                setTreeView.getChildren().add(categoryItem);
 
-                    for (Models mod: Models.values()){
-                        if (mod.getCategories().equals(categoryItem.getValue())){
-                            categoryItem.getChildren().add( new TreeItem(mod));
-                        }
+                List<Models> modelsList = session.createQuery(String.format("FROM Models WHERE id_category = '%s'",cat)).list();
 
-                    }
+                for (Models mod: modelsList){
+                    categoryItem.getChildren().add( new TreeItem(mod));
                 }
             }
             treeView.setRoot(setTreeView);
     }
-
 }

@@ -1,25 +1,28 @@
 package model;
 
-public enum Categories {
+import javax.persistence.*;
 
-    ARES_TB(   Lineup.ARES,   "ARES TB"),
-    ARES_THS(  Lineup.ARES,   "ARES THS"),
-    CRONOS_OLD(Lineup.CRONOS, "CRONOS OLD"),
-    CRONOS_L(  Lineup.CRONOS, "CRONOS L"),
-    CRONOS_NG( Lineup.CRONOS, "CRONOS NG");
+@Entity
+@Table(name = "categories_table")
+public class Categories {
 
+    @Id
+    @Column(name = "category_name")
+    private String category_name;
 
-    private final String name;
-    private final Lineup lineup;
+    @ManyToOne
+    @JoinColumn(name = "id_lineup")
+    private Lineup lineup;
 
+    Categories(){}
     Categories(Lineup lineup, String name) {
         this.lineup = lineup;
-        this.name = name;
+        this.category_name = name;
     }
 
     @Override
     public String toString() {
-        return name;
+        return category_name;
     }
 
     public Lineup getLineup() {

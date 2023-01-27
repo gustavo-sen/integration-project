@@ -42,9 +42,6 @@ public class MainController implements Initializable {
         titledModels.setDisable(true);
 
         List<Lineup> lineupList = session.createQuery("FROM Lineup").list();
-        System.out.println(lineupList);
-        List<Categories> categoriesList = session.createQuery("FROM Categories").list();
-        List<Models> modelsList = session.createQuery("FROM Models").list();
 
         // Line up Select Section
         comboBox.setItems(FXCollections.observableArrayList(lineupList));
@@ -60,33 +57,24 @@ public class MainController implements Initializable {
 
     public void treeReference(Lineup newValue){
 
-            List<Lineup> lineupList = session.createQuery("FROM Lineup").list();
-            List<Categories> categoriesList = session.createQuery("FROM Categories").list();
-            List<Models> modelsList = session.createQuery("FROM Models").list();
+            List<Categories> categoriesList = session.createQuery(String.format("FROM Categories WHERE id_lineup = '%s'",newValue)).list();
 
             //model.Lineup
-
             TreeItem setTreeView = new TreeItem<>(newValue);
             setTreeView.setExpanded(true);
 
             //model.Models
             for(Categories cat: categoriesList){
 
-                if(cat.getLineup().equals(newValue)){
-                    TreeItem<Categories> categoryItem = new TreeItem<>(cat);
-                    setTreeView.getChildren().add(categoryItem);
+                TreeItem<Categories> categoryItem = new TreeItem<>(cat);
+                setTreeView.getChildren().add(categoryItem);
 
-                    for (Models mod: modelsList){
-                        if (mod.getCategories().equals(categoryItem.getValue())){
-                            categoryItem.getChildren().add( new TreeItem(mod));
-                        }
+                List<Models> modelsList = session.createQuery(String.format("FROM Models WHERE id_category = '%s'",cat)).list();
 
-                    }
+                for (Models mod: modelsList){
+                    categoryItem.getChildren().add( new TreeItem(mod));
                 }
             }
             treeView.setRoot(setTreeView);
     }
-
-
-
 }

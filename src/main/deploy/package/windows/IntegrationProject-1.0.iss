@@ -37,6 +37,8 @@ ArchitecturesInstallIn64BitMode=
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
+Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
+Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 
 [Files]
 Source: "IntegrationProject-1.0\IntegrationProject-1.0.exe"; DestDir: "{app}"; Flags: ignoreversion

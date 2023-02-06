@@ -1,14 +1,17 @@
 package com.eletra.controller;
 
-import hibernate.HibernateUtil;
+
+
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import model.Categories;
-import model.Lineup;
-import model.Models;
+
+import model.CategoriesEntity;
+import model.LineupEntity;
+import model.ModelsEntity;
 import org.hibernate.Session;
+import util.HibernateUtil;
 
 import java.net.URL;
 import java.util.List;
@@ -17,10 +20,10 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
 
     @FXML
-    private ComboBox<Lineup> comboBox;
+    private ComboBox<LineupEntity> comboBox;
 
     @FXML
-    private TreeView<Lineup> treeView;
+    private TreeView<LineupEntity> treeView;
 
     @FXML
     private TitledPane titledLineup;
@@ -31,7 +34,7 @@ public class MainController implements Initializable {
     @FXML
     private Accordion accordion;
 
-    private Session session = HibernateUtil.getSessionFactory().openSession();
+    private final Session session = HibernateUtil.getSessionFactory().openSession();
 
 
     @Override
@@ -41,7 +44,7 @@ public class MainController implements Initializable {
         accordion.setExpandedPane(titledLineup);
         titledModels.setDisable(true);
 
-        List<Lineup> lineupList = session.createQuery("FROM Lineup").list();
+        List<LineupEntity> lineupList = session.createQuery("FROM LineupEntity").list();
 
         // Line up Select Section
         comboBox.setItems(FXCollections.observableArrayList(lineupList));
@@ -55,23 +58,23 @@ public class MainController implements Initializable {
 
     }
 
-    public void treeReference(Lineup newValue){
+    public void treeReference(LineupEntity newValue){
 
-            List<Categories> categoriesList = session.createQuery(String.format("FROM Categories WHERE id_lineup = '%s'",newValue)).list();
+            List<CategoriesEntity> categoriesList = session.createQuery(String.format("FROM CategoriesEntity WHERE id_lineup = '%s'",newValue)).list();
 
             //model.Lineup
             TreeItem setTreeView = new TreeItem<>(newValue);
             setTreeView.setExpanded(true);
 
             //model.Models
-            for(Categories cat: categoriesList){
+            for(CategoriesEntity cat: categoriesList){
 
-                TreeItem<Categories> categoryItem = new TreeItem<>(cat);
+                TreeItem<CategoriesEntity> categoryItem = new TreeItem<>(cat);
                 setTreeView.getChildren().add(categoryItem);
 
-                List<Models> modelsList = session.createQuery(String.format("FROM Models WHERE id_category = '%s'",cat)).list();
+                List<ModelsEntity> modelsList = session.createQuery(String.format("FROM ModelsEntity WHERE id_category = '%s'",cat)).list();
 
-                for (Models mod: modelsList){
+                for (ModelsEntity mod: modelsList){
                     categoryItem.getChildren().add( new TreeItem(mod));
                 }
             }

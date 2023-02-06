@@ -12,7 +12,6 @@
     <bytecodeTargetLevel>
       <module name="backend" target="1.8" />
       <module name="Front-end_Integration" target="1.8" />
-      <module name="IntegrationProject" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

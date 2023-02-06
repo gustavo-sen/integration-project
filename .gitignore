@@ -5,3 +5,4 @@
 .idea/modules.xml
 .idea/IntegrationProject.iml
 .idea/compiler.xml
+target/jfx/native/IntegrationProject-1.0/runtime/bin/client/Xusage.txt

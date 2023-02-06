@@ -55,29 +55,28 @@ public class MainController implements Initializable {
             titledModels.setDisable(false);
             titledModels.setExpanded(true);
         });
-
     }
 
     public void treeReference(LineupEntity newValue){
 
-            List<CategoriesEntity> categoriesList = session.createQuery(String.format("FROM CategoriesEntity WHERE id_lineup = '%s'",newValue)).list();
+        List<CategoriesEntity> categoriesList = session.createQuery(String.format("FROM CategoriesEntity WHERE id_lineup = '%s'",newValue)).list();
 
-            //model.Lineup
-            TreeItem setTreeView = new TreeItem<>(newValue);
-            setTreeView.setExpanded(true);
+        //model.Lineup
+        TreeItem setTreeView = new TreeItem<>(newValue);
+        setTreeView.setExpanded(true);
 
-            //model.Models
-            for(CategoriesEntity cat: categoriesList){
+        //model.Models
+        for(CategoriesEntity cat: categoriesList){
 
-                TreeItem<CategoriesEntity> categoryItem = new TreeItem<>(cat);
-                setTreeView.getChildren().add(categoryItem);
+            TreeItem<CategoriesEntity> categoryItem = new TreeItem<>(cat);
+            setTreeView.getChildren().add(categoryItem);
 
-                List<ModelsEntity> modelsList = session.createQuery(String.format("FROM ModelsEntity WHERE id_category = '%s'",cat)).list();
+            List<ModelsEntity> modelsList = session.createQuery(String.format("FROM ModelsEntity WHERE id_category = '%s'",cat)).list();
 
-                for (ModelsEntity mod: modelsList){
-                    categoryItem.getChildren().add( new TreeItem(mod));
-                }
+            for (ModelsEntity mod: modelsList){
+                categoryItem.getChildren().add( new TreeItem(mod));
             }
-            treeView.setRoot(setTreeView);
+        }
+        treeView.setRoot(setTreeView);
     }
 }

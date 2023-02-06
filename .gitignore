@@ -1,8 +1,4 @@
-
-.idea/jpa-buddy.xml
-.idea/jpa-buddy.xml
-.idea/vcs.xml
-.idea/modules.xml
-.idea/IntegrationProject.iml
-.idea/compiler.xml
-target/jfx/native/IntegrationProject-1.0/runtime/bin/client/Xusage.txt
+/target/
+/.idea/
+/.mvn/
+Front-end_Integration.iml

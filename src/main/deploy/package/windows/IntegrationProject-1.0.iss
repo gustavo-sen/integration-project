@@ -23,7 +23,7 @@ DefaultGroupName=gustavo
 LicenseFile=
 ;WinXP or above
 MinVersion=6
-OutputBaseFilename=IntegrationProject-1.0-1.0
+OutputBaseFilename=IntegrationProject
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=lowest

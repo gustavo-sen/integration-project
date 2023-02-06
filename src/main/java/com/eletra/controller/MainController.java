@@ -3,6 +3,7 @@ package com.eletra.controller;
 
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -11,11 +12,14 @@ import model.CategoriesEntity;
 import model.LineupEntity;
 import model.ModelsEntity;
 import org.hibernate.Session;
+import sun.reflect.generics.tree.Tree;
 import util.HibernateUtil;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 public class MainController implements Initializable {
 
@@ -65,18 +69,16 @@ public class MainController implements Initializable {
         TreeItem setTreeView = new TreeItem<>(newValue);
         setTreeView.setExpanded(true);
 
-        //model.Models
-        for(CategoriesEntity cat: categoriesList){
-
-            TreeItem<CategoriesEntity> categoryItem = new TreeItem<>(cat);
+        categoriesList.forEach((category)->{
+            TreeItem<CategoriesEntity> categoryItem = new TreeItem<>(category);
             setTreeView.getChildren().add(categoryItem);
 
-            List<ModelsEntity> modelsList = session.createQuery(String.format("FROM ModelsEntity WHERE id_category = '%s'",cat)).list();
+            //set models
+            List<ModelsEntity> modelsList = session.createQuery(String.format("FROM ModelsEntity WHERE id_category = '%s'",category)).list();
+            modelsList.forEach((model) -> categoryItem.getChildren().add(new TreeItem(category)));
 
-            for (ModelsEntity mod: modelsList){
-                categoryItem.getChildren().add( new TreeItem(mod));
-            }
-        }
+        });
+
         treeView.setRoot(setTreeView);
     }
 }

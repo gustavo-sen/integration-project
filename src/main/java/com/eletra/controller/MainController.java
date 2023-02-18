@@ -24,10 +24,7 @@ public class MainController implements Initializable {
     private TreeView<LineupEntity> treeView;
 
     @FXML
-    private TitledPane titledLineup;
-
-    @FXML
-    private TitledPane titledModels;
+    private TitledPane titledLineup,titledModels;
 
     @FXML
     private Accordion accordion;
@@ -42,25 +39,31 @@ public class MainController implements Initializable {
         accordion.setExpandedPane(titledLineup);
         titledModels.setDisable(true);
 
+        comboBoxSelect();
+
+    }
+
+    private void comboBoxSelect(){
+
         List<LineupEntity> lineupList = session.createQuery("FROM LineupEntity").list();
 
         // Line up Select Section
         comboBox.setItems(FXCollections.observableArrayList(lineupList));
 
-        // Evente Listener ComboBox
+        // Evente Listener ComboBox -- Observable
         comboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
-            treeReference(newValue);
+            createTree(newValue);
             titledModels.setDisable(false);
             titledModels.setExpanded(true);
         });
     }
 
-    public void treeReference(LineupEntity newValue){
+    private void createTree(LineupEntity selectedLineup){
 
-        List<CategoryEntity> categoriesList = session.createQuery(String.format("FROM CategoryEntity WHERE id_lineup = '%s'",newValue)).list();
+        List<CategoryEntity> categoriesList = session.createQuery(String.format("FROM CategoryEntity WHERE id_lineup = '%s'",selectedLineup)).list();
 
         //model.Lineup
-        TreeItem setTreeView = new TreeItem<>(newValue);
+        TreeItem setTreeView = new TreeItem<>(selectedLineup);
         setTreeView.setExpanded(true);
 
         categoriesList.forEach((category)->{
@@ -69,8 +72,7 @@ public class MainController implements Initializable {
 
             //set models
             List<ModelEntity> modelsList = session.createQuery(String.format("FROM ModelEntity WHERE id_category = '%s'",category)).list();
-            modelsList.forEach((model) -> categoryItem.getChildren().add(new TreeItem(category)));
-
+            modelsList.forEach((model) -> categoryItem.getChildren().add(new TreeItem(model)));
         });
 
         treeView.setRoot(setTreeView);

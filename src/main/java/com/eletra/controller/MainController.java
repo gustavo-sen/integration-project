@@ -1,19 +1,23 @@
 package com.eletra.controller;
 
 
+import com.eletra.model.AbstractEntity;
+import com.eletra.model.CategoryEntity;
+import com.eletra.model.LineupEntity;
+import com.eletra.model.ModelEntity;
+import com.google.gson.Gson;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import model.CategoryEntity;
-import model.LineupEntity;
-import model.ModelEntity;
-import org.hibernate.Session;
-import util.HibernateUtil;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static java.util.Arrays.*;
 
 public class MainController implements Initializable {
 
@@ -29,9 +33,6 @@ public class MainController implements Initializable {
     @FXML
     private Accordion accordion;
 
-    private final Session session = HibernateUtil.getSessionFactory().openSession();
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -43,12 +44,11 @@ public class MainController implements Initializable {
 
     }
 
-    private void comboBoxSelect(){
+    private void comboBoxSelect() {
 
-        List<LineupEntity> lineupList = session.createQuery("FROM LineupEntity").list();
-
-        // Line up Select Section
-        comboBox.setItems(FXCollections.observableArrayList(lineupList));
+        comboBox.setItems(FXCollections.observableArrayList(
+                asList(
+                        new Gson().fromJson(WebService.getListOfEntities("lineups"),LineupEntity[].class))));
 
         // Evente Listener ComboBox -- Observable
         comboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
@@ -58,23 +58,25 @@ public class MainController implements Initializable {
         });
     }
 
-    private void createTree(LineupEntity selectedLineup){
+    private void createTree(LineupEntity selectedLineup) {
 
-        List<CategoryEntity> categoriesList = session.createQuery(String.format("FROM CategoryEntity WHERE id_lineup = '%s'",selectedLineup)).list();
-
-        //model.Lineup
         TreeItem setTreeView = new TreeItem<>(selectedLineup);
         setTreeView.setExpanded(true);
 
-        categoriesList.forEach((category)->{
+        TreeItem<CategoryEntity> categoryEntityTreeItem = new TreeItem<>();
+
+
+        asList(new Gson().fromJson(WebService.getListOfEntities("categories",selectedLineup.getName()), CategoryEntity[].class)).forEach((category) -> {
+
             TreeItem<CategoryEntity> categoryItem = new TreeItem<>(category);
             setTreeView.getChildren().add(categoryItem);
 
             //set models
-            List<ModelEntity> modelsList = session.createQuery(String.format("FROM ModelEntity WHERE id_category = '%s'",category)).list();
-            modelsList.forEach((model) -> categoryItem.getChildren().add(new TreeItem(model)));
+            asList(new Gson().fromJson(WebService.getListOfEntities("models",category.getName()), ModelEntity[].class)).forEach(
+                    (model) -> categoryItem.getChildren().add(new TreeItem(model)));
         });
 
         treeView.setRoot(setTreeView);
+
     }
 }

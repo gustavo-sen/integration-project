@@ -2,37 +2,72 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
 
-    <groupId>groupId</groupId>
-    <artifactId>IntegrationProject</artifactId>
-    <version>1.0</version>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.4</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>br.com.eletra</groupId>
+    <version>1.0-SNAPSHOT</version>
+    <artifactId>Projeto_de_Integracao_front_end</artifactId>
+    <packaging>jar</packaging>
+
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>2.7.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>12.0.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+
+    </dependencies>
+
+
     <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>com.zenjava</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>8.8.3</version>
                 <configuration>
-                    <mainClass>com.eletra.AppMain</mainClass>
+                    <mainClass>MainClass</mainClass>
+                    <vendor>Eletra Energy Solutions</vendor>
                     <verbose>true</verbose>
-                    <vendor>gustavo</vendor>
-                    <bundleArguments>
-                        <identifier>SOME-GUID-USED-FOR-UPDATE-DETECTION</identifier>
-                        <installdirChooser>true</installdirChooser>
-                    </bundleArguments>
-                    <additionalAppResources>${project.basedir}/src/main/resources</additionalAppResources>
+                    <appName>Projeto_de_Integracao</appName>
                 </configuration>
                 <executions>
                     <execution>
-                        <!-- required before build-native -->
                         <id>create-jfxjar</id>
                         <phase>package</phase>
                         <goals>
@@ -43,7 +78,7 @@
                         <id>create-native</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>build-native</goal>
+                            <goal>native</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -51,18 +86,43 @@
         </plugins>
     </build>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.eletra</groupId>
-            <artifactId>backend</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
 
-        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-maven-plugin -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>12.0.2</version>
-        </dependency>
-    </dependencies>
+
+
 </project>

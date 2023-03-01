@@ -1,27 +1,27 @@
 package com.eletra.controller;
 
-import com.google.gson.JsonObject;
-
-import javax.swing.text.html.parser.Entity;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 public class WebService {
 
-    private static String baseURL = "http://localhost:8080/api/";
+    private static final String baseURL = "http://localhost:8080/api/";
 
-    public static String getListOfEntities(String entity,String filter) {
-        return connection(String.format("%s/%s/%s",baseURL,entity,filter));
+    //entity [lineups,category,models..]
+    //fromFilter [functions like "FROM" operation]
+    public static String getListOfEntities(String entity,String fromFilter) {
+        return connection(String.format("%s/%s/%s",baseURL,entity,fromFilter));
     }
     public static String getListOfEntities(String entity) {
         return connection(String.format("%s/%s",baseURL,entity));
     }
 
-    public static String connection(String urlParaChamada){
-        String json = "";
+    //Make connection with backend
+    private static String connection(String urlParaChamada){
+
+        StringBuilder rawJson = new StringBuilder();
 
         try {
             URL url = new URL(urlParaChamada.replaceAll(" ","%20"));
@@ -36,14 +36,14 @@ public class WebService {
             String output;
 
             while ((output = br.readLine()) != null){
-                json += output;
+                rawJson.append(output);
             }
             conexao.disconnect();
 
         } catch (Exception e) {
             System.out.println(e);
         }
-        return json;
+        return rawJson.toString();
     }
 
 }

@@ -47,8 +47,7 @@ public class MainController implements Initializable {
     private void comboBoxSelect() {
 
         comboBox.setItems(FXCollections.observableArrayList(
-                asList(
-                        new Gson().fromJson(WebService.getListOfEntities("lineups"),LineupEntity[].class))));
+                asList(new Gson().fromJson(WebService.getListOfEntities("lineups"),LineupEntity[].class))));
 
         // Evente Listener ComboBox -- Observable
         comboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
@@ -64,7 +63,6 @@ public class MainController implements Initializable {
         setTreeView.setExpanded(true);
 
         TreeItem<CategoryEntity> categoryEntityTreeItem = new TreeItem<>();
-
 
         asList(new Gson().fromJson(WebService.getListOfEntities("categories",selectedLineup.getName()), CategoryEntity[].class)).forEach((category) -> {
 

@@ -1,7 +1,6 @@
 package com.eletra.controller;
 
 
-import com.eletra.model.AbstractEntity;
 import com.eletra.model.CategoryEntity;
 import com.eletra.model.LineupEntity;
 import com.eletra.model.ModelEntity;
@@ -12,9 +11,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import static java.util.Arrays.*;
@@ -41,13 +37,12 @@ public class MainController implements Initializable {
         titledModels.setDisable(true);
 
         comboBoxSelect();
-
     }
 
     private void comboBoxSelect() {
 
         comboBox.setItems(FXCollections.observableArrayList(
-                asList(new Gson().fromJson(WebService.getListOfEntities("lineups"),LineupEntity[].class))));
+                asList(new Gson().fromJson(getRequest.getListOfEntities("lineups"),LineupEntity[].class))));
 
         // Evente Listener ComboBox -- Observable
         comboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
@@ -62,19 +57,16 @@ public class MainController implements Initializable {
         TreeItem setTreeView = new TreeItem<>(selectedLineup);
         setTreeView.setExpanded(true);
 
-        TreeItem<CategoryEntity> categoryEntityTreeItem = new TreeItem<>();
-
-        asList(new Gson().fromJson(WebService.getListOfEntities("categories",selectedLineup.getName()), CategoryEntity[].class)).forEach((category) -> {
+        for(CategoryEntity category : new Gson().fromJson(getRequest.getListOfEntities("categories", selectedLineup.getName()), CategoryEntity[].class)) {
 
             TreeItem<CategoryEntity> categoryItem = new TreeItem<>(category);
+
             setTreeView.getChildren().add(categoryItem);
 
             //set models
-            asList(new Gson().fromJson(WebService.getListOfEntities("models",category.getName()), ModelEntity[].class)).forEach(
+            asList(new Gson().fromJson(getRequest.getListOfEntities("models", category.getName()), ModelEntity[].class)).forEach(
                     (model) -> categoryItem.getChildren().add(new TreeItem(model)));
-        });
-
+        }
         treeView.setRoot(setTreeView);
-
     }
 }

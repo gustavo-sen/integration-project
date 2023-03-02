@@ -22,5 +22,6 @@ public class AppMain extends Application {
         primaryStage.initStyle(StageStyle.DECORATED);
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 }

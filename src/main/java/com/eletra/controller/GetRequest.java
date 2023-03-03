@@ -5,9 +5,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class GetRequest {
+public class GETRequest {
 
-    private static final String baseURL = "http://localhost:8080/api/";
+    private static final String baseURL = "http://10.0.0.225:8080/api/";
 
     //entity [lineups,category,models..]
     //fromFilter [functions like "FROM" operation]

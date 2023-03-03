@@ -29,6 +29,9 @@ public class MainController implements Initializable {
     @FXML
     private Accordion accordion;
 
+    @FXML
+    private Button adicionar;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -42,7 +45,7 @@ public class MainController implements Initializable {
     private void comboBoxSelect() {
 
         comboBox.setItems(FXCollections.observableArrayList(
-                asList(new Gson().fromJson(getRequest.getListOfEntities("lineups"),LineupEntity[].class))));
+                asList(new Gson().fromJson(GetRequest.getListOfEntities("lineups"),LineupEntity[].class))));
 
         // Evente Listener ComboBox -- Observable
         comboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
@@ -50,6 +53,10 @@ public class MainController implements Initializable {
             titledModels.setDisable(false);
             titledModels.setExpanded(true);
         });
+
+        adicionar.get
+
+
     }
 
     private void createTree(LineupEntity selectedLineup) {
@@ -57,14 +64,14 @@ public class MainController implements Initializable {
         TreeItem setTreeView = new TreeItem<>(selectedLineup);
         setTreeView.setExpanded(true);
 
-        for(CategoryEntity category : new Gson().fromJson(getRequest.getListOfEntities("categories", selectedLineup.getName()), CategoryEntity[].class)) {
+        for(CategoryEntity category : new Gson().fromJson(GetRequest.getListOfEntities("categories", selectedLineup.getName()), CategoryEntity[].class)) {
 
             TreeItem<CategoryEntity> categoryItem = new TreeItem<>(category);
 
             setTreeView.getChildren().add(categoryItem);
 
             //set models
-            asList(new Gson().fromJson(getRequest.getListOfEntities("models", category.getName()), ModelEntity[].class)).forEach(
+            asList(new Gson().fromJson(GetRequest.getListOfEntities("models", category.getName()), ModelEntity[].class)).forEach(
                     (model) -> categoryItem.getChildren().add(new TreeItem(model)));
         }
         treeView.setRoot(setTreeView);

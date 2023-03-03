@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class getRequest {
+public class GetRequest {
 
     private static final String baseURL = "http://localhost:8080/api/";
 

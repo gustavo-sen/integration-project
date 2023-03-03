@@ -38,9 +38,6 @@ public class MainController implements Initializable {
     @FXML
     private Accordion accordion;
 
-    @FXML
-    private Button adicionar;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //Titled expanded 1
@@ -59,7 +56,7 @@ public class MainController implements Initializable {
 
             //get selected value from combox
             comboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
-                if(newValue !=null){
+                if(newValue != null){
                     createTree(newValue);
                     titledModels.setDisable(false);
                     titledModels.setExpanded(true);

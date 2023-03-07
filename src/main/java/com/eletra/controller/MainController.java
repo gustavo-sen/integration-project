@@ -5,24 +5,17 @@ import com.eletra.model.CategoryEntity;
 import com.eletra.model.LineupEntity;
 import com.eletra.model.ModelEntity;
 import com.google.gson.Gson;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 
 public class MainController implements Initializable {
 

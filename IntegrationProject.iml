@@ -80,6 +80,12 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-jcl:5.3.23" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:5.3.23" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.xmlunit:xmlunit-core:2.9.0" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:12.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:win:12.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:12.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:12.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:12.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:12.0.2" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.10.1" level="project" />
   </component>
 </module>

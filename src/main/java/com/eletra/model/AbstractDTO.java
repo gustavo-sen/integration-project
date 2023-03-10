@@ -1,15 +1,14 @@
 package com.eletra.model;
 
-import javax.persistence.*;
-
-public abstract class AbstractEntity {
+public abstract class AbstractDTO {
 
         private String name;
 
-        public AbstractEntity(String name) {
+        public AbstractDTO(String name) {
                 this.name = name;
         }
-        public AbstractEntity(){}
+
+        public AbstractDTO(){}
 
         public String toString(){
                 return name;

@@ -7,7 +7,7 @@ import java.net.URL;
 
 public class GETRequest {
 
-    private static final String baseURL = "http://10.0.0.225:8080/api/";
+    private static final String baseURL = "http://localhost:8080/api/";
 
     //entity [lineups,category,models..]
     //fromFilter [functions like "FROM" operation]
@@ -19,26 +19,34 @@ public class GETRequest {
         return connection(String.format("%s/%s",baseURL,entity));
     }
 
+
     //Make connection with backend
     private static String connection(String urlParaChamada){
+
         StringBuilder rawJson = new StringBuilder();
+
         try {
             URL url = new URL(urlParaChamada.replaceAll(" ","%20"));
-            HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
-            conexao.setRequestMethod("GET");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
 
-            if (conexao.getResponseCode() != 200){
-                throw new RuntimeException("HTTP error code : " + conexao.getResponseCode());
+            if (connection.getResponseCode() != 200){
+                throw new RuntimeException("HTTP error code : " + connection.getResponseCode());
             }
-            BufferedReader br = new BufferedReader(new InputStreamReader((conexao.getInputStream())));
+
+            BufferedReader br = new BufferedReader(new InputStreamReader((connection.getInputStream())));
+
             String output;
+
             while ((output = br.readLine()) != null){
                 rawJson.append(output);
             }
-            conexao.disconnect();
+
+            connection.disconnect();
         } catch (Exception e) {
             System.out.println(e);
         }
+
         return rawJson.toString();
     }
 

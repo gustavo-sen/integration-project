@@ -1,9 +1,9 @@
 package com.eletra.controller;
 
 
-import com.eletra.model.CategoryDTO;
-import com.eletra.model.LineupDTO;
-import com.eletra.model.modelDTO;
+import com.eletra.dto.CategoryDTO;
+import com.eletra.dto.LineupDTO;
+import com.eletra.dto.modelDTO;
 import com.google.gson.Gson;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;

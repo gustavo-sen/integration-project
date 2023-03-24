@@ -3,13 +3,11 @@ package com.eletra.controller;
 
 import com.eletra.dto.CategoryDTO;
 import com.eletra.dto.LineupDTO;
-import com.eletra.dto.modelDTO;
-import com.google.gson.Gson;
+import com.eletra.dto.ModeDTO;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -35,43 +33,36 @@ public class MainController implements Initializable {
         //Titled expanded 1
         accordion.setExpandedPane(titledLineup);
         titledModels.setDisable(true);
-        comboBoxSelect();
+        comboxSelectLineup();
     }
 
-    private void comboBoxSelect() {
+    private void comboxSelectLineup() {
 
-        //Is mouse pressed
-            comboBox.addEventHandler(MouseEvent.MOUSE_PRESSED, mousePressed -> {
+        comboBox.setItems(FXCollections.observableArrayList(GETRequest.getListOfLineups()));
 
-                comboBox.setItems(FXCollections.observableArrayList(
-                        asList(new Gson().fromJson(GETRequest.getListOfEntities("lineups"), LineupDTO[].class))));
-
-                //get selected value from combox
-                comboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
-                    if (newValue != null) {
-                        createTree(newValue);
-                        titledModels.setDisable(false);
-                        titledModels.setExpanded(true);
-                    }
-                });
-            });
+        //get selected value from combox
+        comboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null) {
+                createTree(newValue);
+                titledModels.setDisable(false);
+                titledModels.setExpanded(true);
+            }
+        });
     }
-
-
 
     private void createTree(LineupDTO selectedLineup) {
 
         TreeItem setTreeView = new TreeItem<>(selectedLineup);
         setTreeView.setExpanded(true);
 
-        for(CategoryDTO category : new Gson().fromJson(GETRequest.getListOfEntities("categories", selectedLineup.getName()), CategoryDTO[].class)) {
+        for(CategoryDTO category : GETRequest.getListOfCategories()){
 
             TreeItem<CategoryDTO> categoryItem = new TreeItem<>(category);
 
             setTreeView.getChildren().add(categoryItem);
 
             //set models
-            asList(new Gson().fromJson(GETRequest.getListOfEntities("models", category.getName()), modelDTO[].class)).forEach(
+            asList(GETRequest.getListOfModels(), ModeDTO[].class).forEach(
                     (model) -> categoryItem.getChildren().add(new TreeItem(model)));
         }
         treeView.setRoot(setTreeView);

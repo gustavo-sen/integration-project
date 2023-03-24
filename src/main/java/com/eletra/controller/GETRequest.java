@@ -16,17 +16,22 @@ import static java.util.Arrays.asList;
 public class GETRequest {
 
     private static final String baseURL = "http://localhost:8080/api/";
+
     //entity [lineups,category,models..]
     //fromFilter [functions like "FROM" operation]
+
     private static String getListOfEntities(String entity,String fromFilter) {
         return connection(String.format("%s/%s/%s",baseURL,entity,fromFilter));
     }
+
     public static List<LineupDTO> getListOfLineups() {
         return  asList(new Gson().fromJson(GETRequest.getListOfEntities("lineups"), LineupDTO[].class));
     }
+
     public static List<CategoryDTO> getListOfCategories(){
         return asList(new Gson().fromJson(GETRequest.getListOfEntities("categories"), CategoryDTO[].class));
     }
+
     public static List<ModeDTO> getListOfModels(){
         return asList(new Gson().fromJson(GETRequest.getListOfEntities("models"), ModeDTO.class));
     }

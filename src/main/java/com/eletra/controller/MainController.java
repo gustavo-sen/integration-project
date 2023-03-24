@@ -1,6 +1,5 @@
 package com.eletra.controller;
 
-
 import com.eletra.dto.CategoryDTO;
 import com.eletra.dto.LineupDTO;
 import com.eletra.dto.ModeDTO;
@@ -67,4 +66,5 @@ public class MainController implements Initializable {
         }
         treeView.setRoot(setTreeView);
     }
+
 }

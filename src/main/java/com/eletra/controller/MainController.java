@@ -54,14 +54,14 @@ public class MainController implements Initializable {
         TreeItem setTreeView = new TreeItem<>(selectedLineup);
         setTreeView.setExpanded(true);
 
-        for(CategoryDTO category : GETRequest.getListOfCategories()){
+        for(CategoryDTO category : GETRequest.getListOfCategories(selectedLineup)){
 
             TreeItem<CategoryDTO> categoryItem = new TreeItem<>(category);
 
             setTreeView.getChildren().add(categoryItem);
 
             //set models
-            asList(GETRequest.getListOfModels(), ModeDTO[].class).forEach(
+            asList(GETRequest.getListOfModels(category), ModeDTO[].class).forEach(
                     (model) -> categoryItem.getChildren().add(new TreeItem(model)));
         }
         treeView.setRoot(setTreeView);

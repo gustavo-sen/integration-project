@@ -8,5 +8,4 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class LineupDTO extends AbstractDTO {
-
 }

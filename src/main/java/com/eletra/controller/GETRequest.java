@@ -1,9 +1,8 @@
 package com.eletra.controller;
 
-import com.eletra.dto.AbstractDTO;
 import com.eletra.dto.CategoryDTO;
 import com.eletra.dto.LineupDTO;
-import com.eletra.dto.ModeDTO;
+import com.eletra.dto.ModelDTO;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -24,23 +23,23 @@ public class GETRequest {
     //fromFilter [functions like "FROM" operation]
 
     private static String getListOfEntities(String entity,String fromFilter) {
-        return getJsonFromConnection(String.format("%s/%s/%s",baseURL,entity,fromFilter));
+        return getJsonFromConnection(baseURL + "/" + entity + "/" + fromFilter);
     }
 
     private static String getListOfEntities(String entity) {
-        return getJsonFromConnection(String.format("%s/%s",baseURL,entity));
+        return getJsonFromConnection(baseURL + "/" + entity);
     }
 
     public static List<LineupDTO> getListOfLineups() {
         return  asList(new Gson().fromJson(GETRequest.getListOfEntities("lineups"), LineupDTO[].class));
     }
 
-    public static List<CategoryDTO> getListOfCategories(AbstractDTO fromEntity){
+    public static List<CategoryDTO> getListOfCategoriesFromEntity(LineupDTO fromEntity){
         return asList(new Gson().fromJson(GETRequest.getListOfEntities("categories",fromEntity.getName()), CategoryDTO[].class));
     }
 
-    public static List<ModeDTO> getListOfModels(AbstractDTO fromEntity){
-        return asList(new Gson().fromJson(GETRequest.getListOfEntities("models",fromEntity.getName()), ModeDTO.class));
+    public static List<ModelDTO> getListOfModelsFromEntity(CategoryDTO fromEntity){
+        return asList(new Gson().fromJson(GETRequest.getListOfEntities("models",fromEntity.getName()), ModelDTO[].class));
     }
 
     //Make connection with backend
@@ -73,13 +72,11 @@ public class GETRequest {
             while ((output = br.readLine()) != null){
                 rawJson.append(output);
             }
-
             connection.disconnect();
 
         }catch (IOException e){
             return "API JSON STRUCTURE INPUT ERROR!";
         }
-
         return rawJson.toString();
     }
 

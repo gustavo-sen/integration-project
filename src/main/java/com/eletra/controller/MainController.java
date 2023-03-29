@@ -2,7 +2,7 @@ package com.eletra.controller;
 
 import com.eletra.dto.CategoryDTO;
 import com.eletra.dto.LineupDTO;
-import com.eletra.dto.ModeDTO;
+import com.eletra.dto.ModelDTO;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -54,14 +54,14 @@ public class MainController implements Initializable {
         TreeItem setTreeView = new TreeItem<>(selectedLineup);
         setTreeView.setExpanded(true);
 
-        for(CategoryDTO category : GETRequest.getListOfCategories(selectedLineup)){
+        for(CategoryDTO category : GETRequest.getListOfCategoriesFromEntity(selectedLineup)){
 
             TreeItem<CategoryDTO> categoryItem = new TreeItem<>(category);
 
             setTreeView.getChildren().add(categoryItem);
 
             //set models
-            asList(GETRequest.getListOfModels(category), ModeDTO[].class).forEach(
+            GETRequest.getListOfModelsFromEntity(category).forEach(
                     (model) -> categoryItem.getChildren().add(new TreeItem(model)));
         }
         treeView.setRoot(setTreeView);

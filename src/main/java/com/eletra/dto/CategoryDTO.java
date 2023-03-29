@@ -11,7 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDTO extends AbstractDTO {
-
     private LineupDTO lineup;
-
 }

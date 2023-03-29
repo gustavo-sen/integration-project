@@ -11,6 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public abstract class AbstractDTO {
 
+        private long id;
+
         private String name;
 
         public String toString(){

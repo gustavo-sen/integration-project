@@ -11,6 +11,7 @@ import java.awt.color.ProfileDataException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -52,35 +53,34 @@ public class GETRequest {
     //Make connection with backend
     private static void prepareRestAPIConnection(String urlParaChamada) {
 
-
         try {
             URL url = new URL(urlParaChamada.replaceAll(" ","%20"));
-            //int responseCode = connection.getResponseCode();
 
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
-           /* if(responseCode != 200){
-                Alert alert = new Alert(Alert.AlertType.WARNING);
+            int responseCode = connection.getResponseCode();
+            if(responseCode != 200){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
-                alert.setHeaderText("Code: " + responseCode);
+                alert.setHeaderText("Connection Error Log");
+                alert.setContentText("Error: " + responseCode);
                 alert.showAndWait();
-            }*/
+            }
 
-
-        } catch (RuntimeException | IOException e) {
+        } catch (IOException | RuntimeException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
-            alert.setContentText(e.getMessage());
+            alert.setHeaderText("Error trying to connect");
+            alert.setContentText(e.getLocalizedMessage());
             alert.showAndWait();
         }
     }
 
-    private static String getJsonFromAPI(String urlParaChamada) {
+    private static String getJsonFromAPI(String url) {
 
         StringBuilder rawJson = new StringBuilder();
-        prepareRestAPIConnection(urlParaChamada);
-
+        prepareRestAPIConnection(url);
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader((connection.getInputStream())));
 
@@ -94,6 +94,7 @@ public class GETRequest {
         } catch (IOException e) {
             return "API JSON STRUCTURE INPUT ERROR!";
         }
+
         return rawJson.toString();
     }
 

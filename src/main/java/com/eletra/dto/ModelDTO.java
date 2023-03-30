@@ -10,5 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ModelDTO extends AbstractDTO {
-    private CategoryDTO category;
+    private CategoryDTO categoryDTO;
 }

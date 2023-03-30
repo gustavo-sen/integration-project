@@ -10,13 +10,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class AbstractDTO {
-
         private long id;
-
         private String name;
-
         public String toString(){
                 return name;
         };
-
 }

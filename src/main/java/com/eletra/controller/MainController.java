@@ -2,7 +2,7 @@ package com.eletra.controller;
 
 import com.eletra.dto.CategoryDTO;
 import com.eletra.dto.LineupDTO;
-import com.eletra.dto.ModelDTO;
+import com.eletra.helper.db.GETRequest;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,8 +10,6 @@ import javafx.scene.control.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import static java.util.Arrays.*;
 
 public class MainController implements Initializable {
 
@@ -32,10 +30,10 @@ public class MainController implements Initializable {
         //Titled expanded 1
         accordion.setExpandedPane(titledLineup);
         titledModels.setDisable(true);
-        comboxSelectLineup();
+        comBoxSelectLineup();
     }
 
-    private void comboxSelectLineup() {
+    private void comBoxSelectLineup() {
 
         comboBox.setItems(FXCollections.observableArrayList(GETRequest.getListOfLineups()));
 

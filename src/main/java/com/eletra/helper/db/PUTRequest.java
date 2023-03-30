@@ -1,4 +1,4 @@
-package com.eletra.controller;
+package com.eletra.helper.db;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -7,7 +7,7 @@ import java.net.URL;
 
 public class PUTRequest {
 
-    private static final String baseURL = "http://localhost:8080/api/";
+    private static final String BASEURL = "http://localhost:8080/api/";
 
     private static String connection(String urlParaChamada){
         StringBuilder rawJson = new StringBuilder();

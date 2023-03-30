@@ -46,7 +46,7 @@ public class GETRequest {
     }
 
     public static List<ModelDTO> getListOfModelsFromEntity(CategoryDTO fromEntity){
-        return new Gson().fromJson(GETRequest.getListOfEntities("models",fromEntity.getName()), new TypeToken<List<LineupDTO>>(){}.getType());
+        return new Gson().fromJson(GETRequest.getListOfEntities("models",fromEntity.getName()), new TypeToken<List<ModelDTO>>(){}.getType());
     }
 
     //Make connection with backend

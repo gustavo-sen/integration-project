@@ -16,18 +16,18 @@ import java.util.List;
 
 public class GETRequest {
 
-    private static final String baseURL = "http://localhost:8080/api/";
+    private static final String BASE_URL = "http://localhost:8080/api/";
     private static HttpURLConnection connection = null;
 
     //entity [lineups,category,models..]
     //fromFilter [functions like "FROM" operation]
 
     private static String getListOfEntities(String entity,String fromFilter) {
-        return getJsonFromAPI(baseURL + "/" + entity + "/" + fromFilter);
+        return getJsonFromAPI(BASE_URL + "/" + entity + "/" + fromFilter);
     }
 
     private static String getListOfEntities(String entity) {
-        return getJsonFromAPI(baseURL + "/" + entity);
+        return getJsonFromAPI(BASE_URL + "/" + entity);
     }
 
     public static List<LineupDTO> getListOfLineups() {

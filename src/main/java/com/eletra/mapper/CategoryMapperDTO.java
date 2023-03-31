@@ -14,4 +14,8 @@ public class CategoryMapperDTO {
         return new Gson().fromJson(GETRequest.getJsonOfEntities("categories",fromEntity.getName()), new TypeToken<List<CategoryDTO>>(){}.getType());
     }
 
+    public static List<CategoryDTO> getListOfAllCategories(){
+        return new Gson().fromJson(GETRequest.getJsonOfEntities("categories"), new TypeToken<List<CategoryDTO>>(){}.getType());
+    }
+
 }

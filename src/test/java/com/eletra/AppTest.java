@@ -1,4 +1,4 @@
-package com.eletra;
+package java.com.eletra;
 
 public class AppTest {
 

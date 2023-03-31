@@ -1,4 +1,4 @@
-package com.eletra.controller;
+package java.com.eletra.controller;
 
 public class MainControllerTest {
 

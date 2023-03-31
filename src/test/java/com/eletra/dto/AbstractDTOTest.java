@@ -1,4 +1,4 @@
-package com.eletra.helper.db;
+package java.com.eletra.dto;
 
 public class AbstractDTOTest {
 }

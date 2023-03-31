@@ -1,4 +1,4 @@
-package com.eletra.helper.db;
+package java.com.eletra.helper.db;
 
 public class PUTResquestTest {
 

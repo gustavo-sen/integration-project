@@ -1,7 +1,6 @@
-package java.com.eletra.controller;
+package com.eletra.controller;
 
 public class MainControllerTest {
 
-    
 
 }

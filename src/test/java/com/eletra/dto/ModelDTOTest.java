@@ -1,4 +1,4 @@
-package java.com.eletra.dto;
+package com.eletra.dto;
 
 public class ModelDTOTest {
 

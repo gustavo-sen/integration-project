@@ -1,4 +1,4 @@
-package java.com.eletra.helper.db;
+package com.eletra.helper.db;
 
 import com.eletra.dto.LineupDTO;
 import com.eletra.helper.db.GETRequest;

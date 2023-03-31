@@ -2,7 +2,9 @@ package com.eletra.controller;
 
 import com.eletra.dto.CategoryDTO;
 import com.eletra.dto.LineupDTO;
-import com.eletra.helper.db.GETRequest;
+import com.eletra.mapper.CategoryMapperDTO;
+import com.eletra.mapper.LineupMapperDTO;
+import com.eletra.mapper.ModelMapperDTO;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,7 +37,7 @@ public class MainController implements Initializable {
 
     private void comBoxSelectLineup() {
 
-        comboBox.setItems(FXCollections.observableArrayList(GETRequest.getListOfLineups()));
+        comboBox.setItems(FXCollections.observableArrayList(LineupMapperDTO.getListOfLineups()));
 
         //get selected value from combox
         comboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
@@ -52,14 +54,14 @@ public class MainController implements Initializable {
         TreeItem setTreeView = new TreeItem<>(selectedLineup);
         setTreeView.setExpanded(true);
 
-        for(CategoryDTO category : GETRequest.getListOfCategoriesFromEntity(selectedLineup)){
+        for(CategoryDTO category : CategoryMapperDTO.getListOfCategoriesFrom(selectedLineup)){
 
             TreeItem<CategoryDTO> categoryItem = new TreeItem<>(category);
 
             setTreeView.getChildren().add(categoryItem);
 
             //set models
-            GETRequest.getListOfModelsFromEntity(category).forEach(
+            ModelMapperDTO.getListOfModelsFrom(category).forEach(
                     (model) -> categoryItem.getChildren().add(new TreeItem(model)));
         }
         treeView.setRoot(setTreeView);

@@ -16,26 +16,26 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
 
     @FXML
-    private ComboBox<LineupDTO> comboBox;
+    protected ComboBox<LineupDTO> comboBox;
 
     @FXML
-    private TreeView<LineupDTO> treeView;
+    protected TreeView<LineupDTO> treeView;
 
     @FXML
-    private TitledPane titledLineup,titledModels;
+    protected TitledPane titledLineup,titledModels;
 
     @FXML
-    private Accordion accordion;
+    protected Accordion accordion;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //Titled expanded 1
         accordion.setExpandedPane(titledLineup);
         titledModels.setDisable(true);
-        comBoxSelectLineup();
+        comboBoxSelectLineup();
     }
 
-    private void comBoxSelectLineup() {
+    protected void comboBoxSelectLineup() {
 
         comboBox.setItems(FXCollections.observableArrayList(LineupMapperDTO.getListOfLineups()));
 

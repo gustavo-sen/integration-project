@@ -34,7 +34,6 @@ public class GETRequest {
             connection.setRequestMethod("GET");
 
             int responseCode = connection.getResponseCode();
-
             if(responseCode != 200){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");

@@ -11,4 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ModelDTO extends AbstractDTO {
     private CategoryDTO categoryDTO;
+
+    public ModelDTO(long id, String name, CategoryDTO categoryDTO) {
+        super(id, name);
+        this.categoryDTO = categoryDTO;
+    }
 }

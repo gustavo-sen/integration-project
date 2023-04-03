@@ -27,6 +27,9 @@ public class MainController implements Initializable {
     @FXML
     protected Accordion accordion;
 
+    protected TreeItem setTreeView;
+    protected TreeItem<CategoryDTO> categoryItem;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //Titled expanded 1
@@ -50,12 +53,12 @@ public class MainController implements Initializable {
 
     protected void createTree(LineupDTO selectedLineup) {
 
-        TreeItem setTreeView = new TreeItem<>(selectedLineup);
+        setTreeView = new TreeItem<>(selectedLineup);
         setTreeView.setExpanded(true);
 
-        for(CategoryDTO category : CategoryMapperDTO.getListOfCategoriesFrom(selectedLineup)){
+        for(CategoryDTO category : CategoryMapperDTO.getListOfCategoriesFrom(selectedLineup)){ //ver se preencheu
 
-            TreeItem<CategoryDTO> categoryItem = new TreeItem<>(category);
+            categoryItem = new TreeItem<>(category);
 
             setTreeView.getChildren().add(categoryItem);
 

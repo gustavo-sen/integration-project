@@ -11,5 +11,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDTO extends AbstractDTO {
-    private LineupDTO lineupDTO;
+    private LineupDTO lineup;
+
+    public CategoryDTO(long id, String name, LineupDTO lineup) {
+        super(id,name);
+        this.lineup = lineup;
+    }
 }

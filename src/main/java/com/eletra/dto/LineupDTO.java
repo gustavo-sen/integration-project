@@ -9,4 +9,7 @@ import lombok.Setter;
 @Setter
 
 public class LineupDTO extends AbstractDTO {
+    public LineupDTO(long id, String name) {
+        super(id, name);
+    }
 }

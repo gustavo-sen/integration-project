@@ -30,10 +30,10 @@ public class MainController implements Initializable {
         //Titled expanded 1
         accordion.setExpandedPane(titledLineup);
         titledModels.setDisable(true);
-        comBoxSelectLineup();
+        comboBoxSelectLineup();
     }
 
-    private void comBoxSelectLineup() {
+    private void comboBoxSelectLineup() {
 
         comboBox.setItems(FXCollections.observableArrayList(GETRequest.getListOfLineups()));
 

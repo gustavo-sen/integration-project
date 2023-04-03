@@ -2,6 +2,7 @@ package com.eletra.controller;
 
 import com.eletra.dto.CategoryDTO;
 import com.eletra.dto.LineupDTO;
+import com.eletra.dto.ModelDTO;
 import com.eletra.mapper.CategoryMapperDTO;
 import com.eletra.mapper.LineupMapperDTO;
 import com.eletra.mapper.ModelMapperDTO;
@@ -29,6 +30,7 @@ public class MainController implements Initializable {
 
     protected TreeItem setTreeView;
     protected TreeItem<CategoryDTO> categoryItem;
+    protected TreeItem modelDTOTreeItem;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -64,7 +66,10 @@ public class MainController implements Initializable {
 
             //set models
             ModelMapperDTO.getListOfModelsFrom(category).forEach(
-                    (model) -> categoryItem.getChildren().add(new TreeItem(model)));
+                    (model) ->{
+                        modelDTOTreeItem = new TreeItem<>(model);
+                        categoryItem.getChildren().add(modelDTOTreeItem);
+                    });
         }
         treeView.setRoot(setTreeView);
     }

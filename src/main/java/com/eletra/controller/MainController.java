@@ -49,7 +49,7 @@ public class MainController implements Initializable {
         });
     }
 
-    private void createTree(LineupDTO selectedLineup) {
+    protected void createTree(LineupDTO selectedLineup) {
 
         TreeItem setTreeView = new TreeItem<>(selectedLineup);
         setTreeView.setExpanded(true);

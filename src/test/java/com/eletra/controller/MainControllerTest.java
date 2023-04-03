@@ -1,7 +1,10 @@
 package com.eletra.controller;
 
 import com.eletra.dto.LineupDTO;
+import com.eletra.mapper.LineupMapperDTO;
 import javafx.beans.binding.BooleanBinding;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TitledPane;
@@ -55,12 +58,15 @@ public class MainControllerTest extends ApplicationTest {
 
     @Test
     public void isComboBoxItemsSetTest01(){
-        mc.comboBox.getItems();
-        assertFalse(mc.comboBox.valueProperty().isBound());
+        mc.comboBox.getItems().clear();
+        mc.comboBoxSelectLineup();
+        assertFalse("Check if items from comboBox is empty when request Lineup List",mc.comboBox.getItems().isEmpty());
     }
 
     @Test
     public void isComboBoxListenerReceivingNotNullNewValuesTest01(){
+        mc.comboBoxSelectLineup();
+
         //assertNull((mc.comboBox.valueProperty().addListener();
     }
 

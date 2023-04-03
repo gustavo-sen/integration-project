@@ -39,7 +39,6 @@ public class MainController implements Initializable {
 
         comboBox.setItems(FXCollections.observableArrayList(LineupMapperDTO.getListOfLineups()));
 
-        //get selected value from combox
         comboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue != null) {
                 createTree(newValue);

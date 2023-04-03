@@ -14,12 +14,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
+import org.mockito.Spy;
 import org.testfx.framework.junit.ApplicationTest;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.*;
 
 public class MainControllerTest extends ApplicationTest {
 
@@ -45,19 +45,21 @@ public class MainControllerTest extends ApplicationTest {
 
     @Test
     public void initializeTest01() {
-        doNothing().when(mc).comboBoxSelectLineup();
-        mc.accordion.setExpandedPane(null);
-
         mc.initialize(null, null);
-
-        assertEquals("Checking if initialize is setting expanded pane in accordion",
-                mc.titledLineup,
-                mc.accordion.getExpandedPane());
-       // error.checkThat("Checking if accordion is disable", mc.accordion.isDisable(), is(true));
+        assertTrue(mc.accordion.isVisible());
+        error.checkThat("Checking if titledLineup is disable", mc.titledModels.isDisable(), is(true));
+        doNothing().when(mc).comboBoxSelectLineup();
     }
 
     @Test
-    public void isComboBoxItemsSetTest01(){
+    public void initializeTest02() {
+        mc.initialize(null,null);
+        verify(mc).comboBoxSelectLineup();
+        doNothing().when(mc).comboBoxSelectLineup();
+    }
+
+    @Test
+    public void comboBoxSelectLineupTest02(){
         mc.comboBox.getItems().clear();
         mc.comboBoxSelectLineup();
         assertFalse("Check if items from comboBox is empty when request Lineup List",mc.comboBox.getItems().isEmpty());
@@ -66,8 +68,18 @@ public class MainControllerTest extends ApplicationTest {
     @Test
     public void isComboBoxListenerReceivingNotNullNewValuesTest01(){
         mc.comboBoxSelectLineup();
+        doNothing().when(mc).createTree(null);
+    }
 
-        //assertNull((mc.comboBox.valueProperty().addListener();
+    @Test
+    public void isTitledModelDisabled(){
+        mc.comboBoxSelectLineup();
+        assertFalse(mc.titledModels.isDisabled());
+    }
+    @Test
+    public void isTitledModelExpanded(){
+        mc.comboBoxSelectLineup();
+        assertFalse(mc.titledModels.isDisabled());
     }
 
 

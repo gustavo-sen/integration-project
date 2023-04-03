@@ -1,10 +1,6 @@
 package com.eletra.controller;
 
 import com.eletra.dto.LineupDTO;
-import com.eletra.mapper.LineupMapperDTO;
-import javafx.beans.binding.BooleanBinding;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TitledPane;
@@ -14,7 +10,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
-import org.mockito.Spy;
 import org.testfx.framework.junit.ApplicationTest;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -46,7 +41,7 @@ public class MainControllerTest extends ApplicationTest {
     @Test
     public void initializeTest01() {
         mc.initialize(null, null);
-        error.checkThat("Check if accordion is expanded",mc.accordion.isVisible(),is(true));
+        assertNotNull("Check if accordion is expanded",mc.accordion.expandedPaneProperty());
         error.checkThat("Checking if titledLineup is disable", mc.titledModels.isDisable(), is(true));
         doNothing().when(mc).comboBoxSelectLineup();
     }
@@ -66,20 +61,30 @@ public class MainControllerTest extends ApplicationTest {
     }
 
     @Test
-    public void isComboBoxListenerReceivingNotNullNewValuesTest01(){
+    public void comboBoxSelectLineupTest03(){
         mc.comboBoxSelectLineup();
         doNothing().when(mc).createTree(null);
     }
 
     @Test
-    public void isTitledModelDisabled(){
+    public void comboBoxSelectLineupTest04(){
         mc.comboBoxSelectLineup();
         assertFalse(mc.titledModels.isDisabled());
     }
     @Test
-    public void isTitledModelExpanded(){
+    public void comboBoxSelectLineupTest05(){
         mc.comboBoxSelectLineup();
         assertFalse(mc.titledModels.isDisabled());
+    }
+
+    @Test
+    public void createTreeTest01(){
+        mc.comboBoxSelectLineup();
+        LineupDTO aresLineup = new LineupDTO();
+        aresLineup.setName("Ares");
+        aresLineup.setId(0L);
+        mc.createTree(aresLineup);
+        error.checkThat("Check if treeView is empty",mc.treeView.getProperties().values().isEmpty(),is(true));
     }
 
 

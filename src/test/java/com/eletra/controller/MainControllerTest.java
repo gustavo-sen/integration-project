@@ -46,7 +46,7 @@ public class MainControllerTest extends ApplicationTest {
     @Test
     public void initializeTest01() {
         mc.initialize(null, null);
-        assertTrue(mc.accordion.isVisible());
+        error.checkThat("Check if accordion is expanded",mc.accordion.isVisible(),is(true));
         error.checkThat("Checking if titledLineup is disable", mc.titledModels.isDisable(), is(true));
         doNothing().when(mc).comboBoxSelectLineup();
     }

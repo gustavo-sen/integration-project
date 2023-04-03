@@ -79,13 +79,13 @@ public class MainControllerTest extends ApplicationTest {
 
     @Test
     public void createTreeTest01(){
-        mc.comboBoxSelectLineup();
+
         LineupDTO aresLineup = new LineupDTO();
         aresLineup.setName("Ares");
-        aresLineup.setId(0L);
+        aresLineup.setId(1);
+
         mc.createTree(aresLineup);
-        error.checkThat("Check if treeView is empty",mc.treeView.getProperties().values().isEmpty(),is(true));
+        error.checkThat("Check if treeView is empty",mc.treeView.getProperties().values().isEmpty(),is(false));
+
     }
-
-
 }

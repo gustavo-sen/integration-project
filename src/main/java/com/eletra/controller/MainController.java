@@ -65,5 +65,4 @@ public class MainController implements Initializable {
         }
         treeView.setRoot(setTreeView);
     }
-
 }

@@ -29,7 +29,6 @@ public class MainController implements Initializable {
     protected Accordion accordion;
 
     protected TreeItem setTreeView;
-    protected TreeItem<CategoryDTO> categoryItem;
     protected TreeItem modelDTOTreeItem;
 
     @Override
@@ -58,9 +57,9 @@ public class MainController implements Initializable {
         setTreeView = new TreeItem<>(selectedLineup);
         setTreeView.setExpanded(true);
 
-        for(CategoryDTO category : CategoryMapperDTO.getListOfCategoriesFrom(selectedLineup)){ //ver se preencheu
+        for(CategoryDTO category : CategoryMapperDTO.getListOfCategoriesFrom(selectedLineup)){
 
-            categoryItem = new TreeItem<>(category);
+            TreeItem<CategoryDTO> categoryItem = new TreeItem<>(category);
 
             setTreeView.getChildren().add(categoryItem);
 
@@ -71,6 +70,7 @@ public class MainController implements Initializable {
                         categoryItem.getChildren().add(modelDTOTreeItem);
                     });
         }
+
         treeView.setRoot(setTreeView);
     }
 }

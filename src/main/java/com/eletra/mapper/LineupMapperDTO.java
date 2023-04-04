@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.List;
 
 public class LineupMapperDTO {
+
     public static List<LineupDTO> getListOfLineups() {
         return new Gson().fromJson(GETRequest.getJsonOfEntities("lineups"), new TypeToken<List<LineupDTO>>(){}.getType());
     }

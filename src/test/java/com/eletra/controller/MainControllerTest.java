@@ -8,6 +8,7 @@ import com.eletra.helper.db.GETRequest;
 import com.eletra.mapper.CategoryMapperDTO;
 import com.eletra.mapper.LineupMapperDTO;
 import com.eletra.mapper.ModelMapperDTO;
+import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import org.junit.After;
 import org.junit.Before;
@@ -65,6 +66,7 @@ public class MainControllerTest extends ApplicationTest {
         mc.initialize(null, null);
         assertNotNull("Check if accordion is expanded",mc.accordion.expandedPaneProperty());
         error.checkThat("Checking if titledLineup is disable", mc.titledModels.isDisable(), is(true));
+
     }
 
     @Test
@@ -75,26 +77,37 @@ public class MainControllerTest extends ApplicationTest {
     }
 
     @Test
+    public void comboBoxSelectLineupTest01(){
+        LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
+
+        try(MockedStatic<LineupMapperDTO> lineupMapperDTOMockedStatic = Mockito.mockStatic(LineupMapperDTO.class)){
+            lineupMapperDTOMockedStatic.when(() -> LineupMapperDTO.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
+            mc.comboBox.getItems().clear();
+            mc.comboBoxSelectLineup();
+            error.checkThat("Check if items from comboBox is empty when request Lineup List",mc.comboBox.getItems().isEmpty(),is(false));
+        }
+    }
+
+    @Test
     public void comboBoxSelectLineupTest02(){
-        mc.comboBox.getItems().clear();
-        mc.comboBoxSelectLineup();
-        assertFalse("Check if items from comboBox is empty when request Lineup List",mc.comboBox.getItems().isEmpty());
+        LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
+
+        try(MockedStatic<LineupMapperDTO> lineupMapperDTOMockedStatic = Mockito.mockStatic(LineupMapperDTO.class)){
+            lineupMapperDTOMockedStatic.when(() -> LineupMapperDTO.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
+            mc.comboBoxSelectLineup();
+            doNothing().when(mc).createTree(null);
+            error.checkThat("Check if items from comboBox is empty when request Lineup List",mc.comboBox.getItems().isEmpty(),is(false));
+        }
     }
 
     @Test
     public void comboBoxSelectLineupTest03(){
         mc.comboBoxSelectLineup();
-        doNothing().when(mc).createTree(null);
-    }
-
-    @Test
-    public void comboBoxSelectLineupTest04(){
-        mc.comboBoxSelectLineup();
         assertFalse(mc.titledModels.isDisabled());
     }
 
     @Test
-    public void comboBoxSelectLineupTest05(){
+    public void comboBoxSelectLineupTest04(){
         mc.comboBoxSelectLineup();
         assertFalse(mc.titledModels.isDisabled());
     }

@@ -8,10 +8,7 @@ import com.eletra.helper.db.GETRequest;
 import com.eletra.mapper.CategoryMapperDTO;
 import com.eletra.mapper.LineupMapperDTO;
 import com.eletra.mapper.ModelMapperDTO;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TitledPane;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -49,8 +46,9 @@ public class MainControllerTest extends ApplicationTest {
     @Before
     public void setUp() {
         mc = spy(MainController.class);
-        mc.comboBox = new ComboBox<LineupDTO>();
-        mc.treeView = new TreeView<LineupDTO>();
+        mc.categoryItem = new TreeItem<>();
+        mc.comboBox = new ComboBox<>();
+        mc.treeView = new TreeView<>();
         mc.titledLineup = new TitledPane();
         mc.titledModels = new TitledPane();
         mc.accordion = new Accordion();
@@ -63,17 +61,17 @@ public class MainControllerTest extends ApplicationTest {
 
     @Test
     public void initializeTest01() {
+        doNothing().when(mc).comboBoxSelectLineup();
         mc.initialize(null, null);
         assertNotNull("Check if accordion is expanded",mc.accordion.expandedPaneProperty());
         error.checkThat("Checking if titledLineup is disable", mc.titledModels.isDisable(), is(true));
-        doNothing().when(mc).comboBoxSelectLineup();
     }
 
     @Test
     public void initializeTest02() {
+        doNothing().when(mc).comboBoxSelectLineup();
         mc.initialize(null,null);
         verify(mc).comboBoxSelectLineup();
-        doNothing().when(mc).comboBoxSelectLineup();
     }
 
     @Test
@@ -111,7 +109,6 @@ public class MainControllerTest extends ApplicationTest {
     @Test
     public void createTreeTest02(){
         LineupDTO lineupDTO = new LineupDTO(1,"Ares");
-
         mc.createTree(lineupDTO);
         error.checkThat("Check if Lineup treeView is expanded ",mc.setTreeView.isExpanded(),is(true));
     }
@@ -124,43 +121,20 @@ public class MainControllerTest extends ApplicationTest {
         ModelDTO[] modelDTOS = {new ModelDTO(12, "Ares 7021", categoryDTOS[0]),new ModelDTO(13,"Ares 7031",categoryDTOS[1])};
         List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
         List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
-        mc.createTree(lineupDTO);
 
         try (MockedStatic<CategoryMapperDTO> categoryMapperDTOMockedStatic = Mockito.mockStatic(CategoryMapperDTO.class)) {
-            categoryMapperDTOMockedStatic.when(() -> CategoryMapperDTO.getListOfCategoriesFrom(lineupDTO)).thenReturn(categoryDTOSList);
             try(MockedStatic<ModelMapperDTO> modelMapperDTOMockedStatic = Mockito.mockStatic(ModelMapperDTO.class)){
+                categoryMapperDTOMockedStatic.when(() -> CategoryMapperDTO.getListOfCategoriesFrom(lineupDTO)).thenReturn(categoryDTOSList);
                 modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
-
                 error.checkThat("Check if Main treeView is filled by Categories",mc.setTreeView.getChildren().isEmpty(),is(false));
             }
         }
-
     }
 
     @Test
     public void createTreeTest04(){
-        LineupDTO lineupDTO = new LineupDTO(1,"Ares");
 
-        CategoryDTO[] categoryDTOS = {new CategoryDTO(4,"Ares TB",lineupDTO),new CategoryDTO(5,"Ares THS",lineupDTO)};
-        ModelDTO[] modelDTOS = {new ModelDTO(12, "Ares 7021", categoryDTOS[0]),new ModelDTO(13,"Ares 7031",categoryDTOS[1])};
-        List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
-        List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
-        mc.createTree(lineupDTO);
-
-        try (MockedStatic<CategoryMapperDTO> categoryMapperDTOMockedStatic = Mockito.mockStatic(CategoryMapperDTO.class)) {
-            categoryMapperDTOMockedStatic.when(() -> CategoryMapperDTO.getListOfCategoriesFrom(lineupDTO)).thenReturn(categoryDTOSList);
-            try(MockedStatic<ModelMapperDTO> modelMapperDTOMockedStatic = Mockito.mockStatic(ModelMapperDTO.class)){
-                modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
-
-                error.checkThat("Check if CategoryTreeView is filled by Model",mc.categoryItem.getChildren().isEmpty(),is(false));
-            }
-        }
-
-    }
-
-
-    @Test
-    public void createTreeTest05(){
+        LineupDTO aresLineup = new LineupDTO(1,"Ares");
 
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
         CategoryDTO[] categoryDTOS = {new CategoryDTO(4,"Ares TB",lineupDTOS[0]),new CategoryDTO(5,"Ares THS",lineupDTOS[0])};
@@ -169,14 +143,37 @@ public class MainControllerTest extends ApplicationTest {
         List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
         List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
 
-        mc.createTree(lineupDTOS[0]);
+        try (MockedStatic<CategoryMapperDTO> categoryMapperDTOMockedStatic = Mockito.mockStatic(CategoryMapperDTO.class)) {
+            mc.createTree(aresLineup);
+            try(MockedStatic<ModelMapperDTO> modelMapperDTOMockedStatic = Mockito.mockStatic(ModelMapperDTO.class)){
+                mc.createTree(aresLineup);
+                mc.categoryItem.getChildren().clear(); //clean categoryItems list
+                categoryMapperDTOMockedStatic.when(() -> CategoryMapperDTO.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
+                modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
+                error.checkThat("Check if CategoryTreeView is filled by Model",mc.categoryItem.getChildren().isEmpty(),is(false));
+            }
+        }
+
+    }
+
+    @Test
+    public void createTreeTest05(){
+
+        LineupDTO aresLineup = new LineupDTO(1,"Ares");
+
+        LineupDTO[] lineupDTOS = {aresLineup, new LineupDTO(2,"Cronos")};
+        CategoryDTO[] categoryDTOS = {new CategoryDTO(4,"Ares TB",lineupDTOS[0]),new CategoryDTO(5,"Ares THS",lineupDTOS[0])};
+        ModelDTO[] modelDTOS = {new ModelDTO(12, "Ares 7021", categoryDTOS[0]),new ModelDTO(13,"Ares 7031",categoryDTOS[1])};
+
+        List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
+        List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
 
         try (MockedStatic<CategoryMapperDTO> categoryMapperDTOMockedStatic = Mockito.mockStatic(CategoryMapperDTO.class)) {
-            categoryMapperDTOMockedStatic.when(() -> CategoryMapperDTO.getListOfCategoriesFrom(lineupDTOS[0])).thenReturn(categoryDTOSList);
             try(MockedStatic<ModelMapperDTO> modelMapperDTOMockedStatic = Mockito.mockStatic(ModelMapperDTO.class)){
+                categoryMapperDTOMockedStatic.when(() -> CategoryMapperDTO.getListOfCategoriesFrom(lineupDTOS[0])).thenReturn(categoryDTOSList);
                 modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
-                System.out.println(mc.treeView.getProperties().size());
-                error.checkThat("Check if Main treeView is empty",mc.treeView.isCache(),is(false));
+                mc.createTree(aresLineup);
+                error.checkThat("Check if Main treeView is empty",mc.treeView.getProperties().isEmpty(),is(false));
             }
         }
     }

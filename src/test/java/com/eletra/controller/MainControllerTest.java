@@ -1,6 +1,5 @@
 package com.eletra.controller;
 
-import ch.qos.logback.core.util.COWArrayList;
 import com.eletra.dto.CategoryDTO;
 import com.eletra.dto.LineupDTO;
 import com.eletra.dto.ModelDTO;
@@ -19,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.springframework.ui.Model;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.util.ArrayList;
@@ -52,7 +50,7 @@ public class MainControllerTest extends ApplicationTest {
         mc.titledLineup = new TitledPane();
         mc.titledModels = new TitledPane();
         mc.accordion = new Accordion();
-        mc.setTreeView = new TreeItem();
+        mc.rootTreeView = new TreeItem();
     }
 
     @After
@@ -143,7 +141,7 @@ public class MainControllerTest extends ApplicationTest {
                 modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
                 mc.createTree(aresLineup);
-                error.checkThat("Check if TreeView is expanded",mc.setTreeView.isExpanded(),is(true));
+                error.checkThat("Check if TreeView is expanded",mc.rootTreeView.isExpanded(),is(true));
             }
         }
 
@@ -164,7 +162,7 @@ public class MainControllerTest extends ApplicationTest {
                 modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
                 mc.createTree(aresLineup);
-                error.checkThat("Check if Main treeView is filled by Categories",mc.setTreeView.getChildren().isEmpty(),is(false));
+                error.checkThat("Check if Main treeView is filled by Categories",mc.rootTreeView.getChildren().isEmpty(),is(false));
             }
         }
     }
@@ -184,7 +182,7 @@ public class MainControllerTest extends ApplicationTest {
                 modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
                 mc.createTree(aresLineup);
-                error.checkThat("Check if Main treeView is expanded",mc.setTreeView.isExpanded(),is(true));
+                error.checkThat("Check if Main treeView is expanded",mc.rootTreeView.isExpanded(),is(true));
             }
         }
     }

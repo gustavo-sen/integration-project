@@ -2,7 +2,6 @@ package com.eletra.controller;
 
 import com.eletra.dto.CategoryDTO;
 import com.eletra.dto.LineupDTO;
-import com.eletra.dto.ModelDTO;
 import com.eletra.mapper.CategoryMapperDTO;
 import com.eletra.mapper.LineupMapperDTO;
 import com.eletra.mapper.ModelMapperDTO;
@@ -28,7 +27,7 @@ public class MainController implements Initializable {
     @FXML
     protected Accordion accordion;
 
-    protected TreeItem setTreeView;
+    protected TreeItem rootTreeView;
     protected TreeItem modelDTOTreeItem;
 
     @Override
@@ -54,14 +53,14 @@ public class MainController implements Initializable {
 
     protected void createTree(LineupDTO selectedLineup) {
 
-        setTreeView = new TreeItem<>(selectedLineup);
-        setTreeView.setExpanded(true);
+        rootTreeView = new TreeItem<>(selectedLineup);
+        rootTreeView.setExpanded(true);
 
         for(CategoryDTO category : CategoryMapperDTO.getListOfCategoriesFrom(selectedLineup)){
 
             TreeItem<CategoryDTO> categoryItem = new TreeItem<>(category);
 
-            setTreeView.getChildren().add(categoryItem);
+            rootTreeView.getChildren().add(categoryItem);
 
             //set models
             ModelMapperDTO.getListOfModelsFrom(category).forEach(
@@ -71,6 +70,6 @@ public class MainController implements Initializable {
                     });
         }
 
-        treeView.setRoot(setTreeView);
+        treeView.setRoot(rootTreeView);
     }
 }

@@ -130,27 +130,6 @@ public class MainControllerTest extends ApplicationTest {
 
     @Test
     public void createTreeTest01(){
-        LineupDTO lineupDTO = new LineupDTO(1,"Ares");
-
-        CategoryDTO[] categoryDTOS = {new CategoryDTO(4,"Ares TB",lineupDTO),new CategoryDTO(5,"Ares THS",lineupDTO)};
-        ModelDTO[] modelDTOS = {new ModelDTO(12, "Ares 7021", categoryDTOS[0]),new ModelDTO(13,"Ares 7031",categoryDTOS[1])};
-        List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
-        List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
-
-        try (MockedStatic<CategoryMapperDTO> categoryMapperDTOMockedStatic = Mockito.mockStatic(CategoryMapperDTO.class)) {
-            try(MockedStatic<ModelMapperDTO> modelMapperDTOMockedStatic = Mockito.mockStatic(ModelMapperDTO.class)){
-                categoryMapperDTOMockedStatic.when(() -> CategoryMapperDTO.getListOfCategoriesFrom(lineupDTO)).thenReturn(categoryDTOSList);
-                modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
-
-                mc.createTree(new LineupDTO(1,"Ares"));
-                error.checkThat(mc.setTreeView.isExpanded(),is(true));            }
-        }
-
-    }
-
-
-    @Test
-    public void createTreeTest02(){
         LineupDTO aresLineup = new LineupDTO(1,"Ares");
 
         CategoryDTO[] categoryDTOS = {new CategoryDTO(4,"Ares TB",aresLineup),new CategoryDTO(5,"Ares THS",aresLineup)};
@@ -164,13 +143,14 @@ public class MainControllerTest extends ApplicationTest {
                 modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
                 mc.createTree(aresLineup);
-                error.checkThat("Check if Lineup treeView is expanded ",mc.setTreeView.isExpanded(),is(true));          }
+                error.checkThat("Check if TreeView is expanded",mc.setTreeView.isExpanded(),is(true));
+            }
         }
 
     }
 
     @Test
-    public void createTreeTest03(){
+    public void createTreeTest02(){
         LineupDTO aresLineup = new LineupDTO(1,"Ares");
 
         CategoryDTO[] categoryDTOS = {new CategoryDTO(4,"Ares TB",aresLineup),new CategoryDTO(5,"Ares THS",aresLineup)};
@@ -190,7 +170,7 @@ public class MainControllerTest extends ApplicationTest {
     }
 
     @Test
-    public void createTreeTest04(){
+    public void createTreeTest03(){
         LineupDTO aresLineup = new LineupDTO(1,"Ares");
 
         CategoryDTO[] categoryDTOS = {new CategoryDTO(4,"Ares TB",aresLineup),new CategoryDTO(5,"Ares THS",aresLineup)};
@@ -210,7 +190,7 @@ public class MainControllerTest extends ApplicationTest {
     }
 
     @Test
-    public void createTreeTest05(){
+    public void createTreeTest04(){
 
         LineupDTO aresLineup = new LineupDTO(1,"Ares");
 

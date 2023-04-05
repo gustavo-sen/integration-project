@@ -10,8 +10,8 @@ import java.net.URL;
 
 public class GETRequest {
 
-    private static final String BASE_URL = "http://localhost:8080/api/";
-    private static HttpURLConnection connection = null;
+    protected static final String BASE_URL = "http://localhost:8080/api/";
+    protected static HttpURLConnection connection = null;
 
     //entity [lineups,category,models..]
     //fromFilter [functions like "FROM" operation]
@@ -24,8 +24,31 @@ public class GETRequest {
         return getJsonFormatted(BASE_URL + "/" + entity);
     }
 
+    protected static String getJsonFormatted(String connectionUrl) {
+
+        prepareRestAPIConnection(connectionUrl);
+
+        StringBuilder rawJson = new StringBuilder();
+
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader((connection.getInputStream())));
+
+            String output;
+
+            while ((output = br.readLine()) != null) {
+                rawJson.append(output);
+            }
+            connection.disconnect();
+
+        } catch (IOException e) {
+            return "API JSON STRUCTURE INPUT ERROR!";
+        }
+
+        return rawJson.toString();
+    }
+
     //Make connection with backend
-    private static void prepareRestAPIConnection(String connectionUrl) {
+    protected static void prepareRestAPIConnection(String connectionUrl) {
 
         try {
             URL url = new URL(connectionUrl.replaceAll(" ","%20"));
@@ -49,29 +72,6 @@ public class GETRequest {
             alert.setContentText(e.getLocalizedMessage());
             alert.showAndWait();
         }
-    }
-
-    private static String getJsonFormatted(String connectionUrl) {
-
-        prepareRestAPIConnection(connectionUrl);
-
-        StringBuilder rawJson = new StringBuilder();
-
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader((connection.getInputStream())));
-
-            String output;
-
-            while ((output = br.readLine()) != null) {
-                rawJson.append(output);
-            }
-            connection.disconnect();
-
-        } catch (IOException e) {
-            return "API JSON STRUCTURE INPUT ERROR!";
-        }
-
-        return rawJson.toString();
     }
 
 }

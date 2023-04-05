@@ -3,10 +3,7 @@ package com.eletra.controller;
 import com.eletra.dto.CategoryDTO;
 import com.eletra.dto.LineupDTO;
 import com.eletra.dto.ModelDTO;
-import com.eletra.helper.db.GETRequest;
-import com.eletra.mapper.CategoryMapperDTO;
-import com.eletra.mapper.LineupMapperDTO;
-import com.eletra.mapper.ModelMapperDTO;
+import com.eletra.mapper.*;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import org.junit.After;
@@ -14,10 +11,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
-import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.util.ArrayList;
@@ -34,13 +29,6 @@ public class MainControllerTest extends ApplicationTest {
     public ErrorCollector error = new ErrorCollector();
 
     MainController mc;
-
-    @Mock
-    CategoryMapperDTO categoryMapperDTO;
-    @Mock
-    ModelMapperDTO modelMapperDTO;
-    @Spy
-    GETRequest request;
 
     @Before
     public void setUp() {
@@ -135,9 +123,9 @@ public class MainControllerTest extends ApplicationTest {
         List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
         List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
 
-        try (MockedStatic<CategoryMapperDTO> categoryMapperDTOMockedStatic = Mockito.mockStatic(CategoryMapperDTO.class)) {
+        try (MockedStatic<CategoryMapperDTO> categoryDTOMockedStatic = Mockito.mockStatic(CategoryMapperDTO.class)) {
             try(MockedStatic<ModelMapperDTO> modelMapperDTOMockedStatic = Mockito.mockStatic(ModelMapperDTO.class)){
-                categoryMapperDTOMockedStatic.when(() -> CategoryMapperDTO.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
+                categoryDTOMockedStatic.when(() -> com.eletra.mapper.CategoryMapperDTO.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
                 modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
                 mc.createTree(aresLineup);
@@ -158,8 +146,8 @@ public class MainControllerTest extends ApplicationTest {
 
         try (MockedStatic<CategoryMapperDTO> categoryMapperDTOMockedStatic = Mockito.mockStatic(CategoryMapperDTO.class)) {
             try(MockedStatic<ModelMapperDTO> modelMapperDTOMockedStatic = Mockito.mockStatic(ModelMapperDTO.class)){
-                categoryMapperDTOMockedStatic.when(() -> CategoryMapperDTO.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
-                modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
+                categoryMapperDTOMockedStatic.when(() -> com.eletra.mapper.CategoryMapperDTO.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
+                modelMapperDTOMockedStatic.when(() -> com.eletra.mapper.ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
                 mc.createTree(aresLineup);
                 error.checkThat("Check if Main treeView is filled by Categories",mc.rootTreeView.getChildren().isEmpty(),is(false));
@@ -178,8 +166,8 @@ public class MainControllerTest extends ApplicationTest {
 
         try (MockedStatic<CategoryMapperDTO> categoryMapperDTOMockedStatic = Mockito.mockStatic(CategoryMapperDTO.class)) {
             try(MockedStatic<ModelMapperDTO> modelMapperDTOMockedStatic = Mockito.mockStatic(ModelMapperDTO.class)){
-                categoryMapperDTOMockedStatic.when(() -> CategoryMapperDTO.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
-                modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
+                categoryMapperDTOMockedStatic.when(() -> com.eletra.mapper.CategoryMapperDTO.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
+                modelMapperDTOMockedStatic.when(() -> com.eletra.mapper.ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
                 mc.createTree(aresLineup);
                 error.checkThat("Check if Main treeView is expanded",mc.rootTreeView.isExpanded(),is(true));
@@ -201,7 +189,7 @@ public class MainControllerTest extends ApplicationTest {
 
         try (MockedStatic<CategoryMapperDTO> categoryMapperDTOMockedStatic = Mockito.mockStatic(CategoryMapperDTO.class)) {
             try(MockedStatic<ModelMapperDTO> modelMapperDTOMockedStatic = Mockito.mockStatic(ModelMapperDTO.class)){
-                categoryMapperDTOMockedStatic.when(() -> CategoryMapperDTO.getListOfCategoriesFrom(lineupDTOS[0])).thenReturn(categoryDTOSList);
+                categoryMapperDTOMockedStatic.when(() -> com.eletra.mapper.CategoryMapperDTO.getListOfCategoriesFrom(lineupDTOS[0])).thenReturn(categoryDTOSList);
                 modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
                 mc.createTree(aresLineup);

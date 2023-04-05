@@ -227,7 +227,7 @@ public class MainControllerTest extends ApplicationTest {
                 modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
                 mc.createTree(aresLineup);
-                error.checkThat("Check if Main treeView is empty",mc.treeView.getProperties().isEmpty(),is(false));
+                error.checkThat("Check if Main treeView is empty",mc.treeView.getRoot().getChildren().isEmpty(),is(false));
             }
         }
     }

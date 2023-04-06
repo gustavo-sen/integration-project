@@ -24,7 +24,7 @@ public class GETRequest {
         return getJsonFormatted(BASE_URL + "/" + entity);
     }
 
-    protected static String getJsonFormatted(String connectionUrl) {
+    public static String getJsonFormatted(String connectionUrl) {
 
         prepareRestAPIConnection(connectionUrl);
 

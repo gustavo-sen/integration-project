@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
+import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.testfx.framework.junit.ApplicationTest;
@@ -26,7 +27,10 @@ import static org.mockito.Mockito.*;
 public class MainControllerTest extends ApplicationTest {
 
     @Rule
-    public ErrorCollector error = new ErrorCollector();
+    private ErrorCollector error = new ErrorCollector();
+
+    @Mock
+    private MockedStatic<GETRequest> getRequestMockedStatic = Mockito.mockStatic(GETRequest.class);
 
     MainController mc;
 
@@ -52,8 +56,7 @@ public class MainControllerTest extends ApplicationTest {
         doNothing().when(mc).comboBoxSelectLineup();
         mc.initialize(null, null);
         error.checkThat("Checking if titledLineup is disable", mc.titledModels.isDisable(), is(true));
-        assertNotNull("Check if accordion is expanded",mc.accordion.expandedPaneProperty());
-
+        assertTrue("Check if accordion is expanded",mc.accordion.expandedPaneProperty().getValue().isExpanded());
     }
 
     @Test
@@ -68,50 +71,45 @@ public class MainControllerTest extends ApplicationTest {
     public void comboBoxSelectLineupTest01(){
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
 
-        try(MockedStatic<GETRequest> getRequestMockedStatic = Mockito.mockStatic(GETRequest.class)){
-            getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
+        getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
 
-            mc.comboBox.getItems().clear();
-            mc.comboBoxSelectLineup();
-            error.checkThat("Check if items from comboBox is empty when request Lineup List",mc.comboBox.getItems().isEmpty(),is(false));
-        }
+        mc.comboBox.getItems().clear();
+        mc.comboBoxSelectLineup();
+        error.checkThat("Check if items from comboBox is empty when request Lineup List",mc.comboBox.getItems().isEmpty(),is(false));
+
     }
 
     @Test
     public void comboBoxSelectLineupTest02(){
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
 
-        try(MockedStatic<GETRequest> getRequestMockedStatic = Mockito.mockStatic(GETRequest.class)){
-            getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
+        getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
 
-            mc.comboBoxSelectLineup();
-            doNothing().when(mc).createTree(null);
-            error.checkThat("Check if items from comboBox is empty when request Lineup List",mc.comboBox.getItems().isEmpty(),is(false));
-        }
+        mc.comboBoxSelectLineup();
+        doNothing().when(mc).createTree(null);
+        error.checkThat("Check if items from comboBox is empty when request Lineup List",mc.comboBox.getItems().isEmpty(),is(false));
+
     }
 
     @Test
     public void comboBoxSelectLineupTest03(){
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
 
-        try(MockedStatic<GETRequest> getRequestMockedStatic = Mockito.mockStatic(GETRequest.class)){
-            getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
+        getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
 
-            mc.comboBoxSelectLineup();
-            assertFalse(mc.titledModels.isDisabled());
-        }
+        mc.comboBoxSelectLineup();
+        assertFalse(mc.titledModels.isDisabled());
+
     }
 
     @Test
     public void comboBoxSelectLineupTest04(){
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
 
-        try(MockedStatic<GETRequest> getRequestMockedStatic = Mockito.mockStatic(GETRequest.class)){
-            getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
+        getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
 
-            mc.comboBoxSelectLineup();
-            assertFalse(mc.titledModels.isDisabled());
-        }
+        mc.comboBoxSelectLineup();
+        assertFalse(mc.titledModels.isDisabled());
 
     }
 
@@ -124,15 +122,11 @@ public class MainControllerTest extends ApplicationTest {
         List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
         List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
 
-        try (MockedStatic<CategoryMapperDTO> categoryDTOMockedStatic = Mockito.mockStatic(CategoryMapperDTO.class)) {
-            try(MockedStatic<ModelMapperDTO> modelMapperDTOMockedStatic = Mockito.mockStatic(ModelMapperDTO.class)){
-                categoryDTOMockedStatic.when(() -> com.eletra.mapper.CategoryMapperDTO.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
-                modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
+        getRequestMockedStatic.when(() -> GETRequest.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
+        getRequestMockedStatic.when(() -> GETRequest.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
-                mc.createTree(aresLineup);
-                error.checkThat("Check if TreeView is expanded",mc.rootTreeView.isExpanded(),is(true));
-            }
-        }
+        mc.createTree(aresLineup);
+        error.checkThat("Check if TreeView is expanded",mc.rootTreeView.isExpanded(),is(true));
 
     }
 
@@ -145,15 +139,12 @@ public class MainControllerTest extends ApplicationTest {
         List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
         List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
 
-        try (MockedStatic<CategoryMapperDTO> categoryMapperDTOMockedStatic = Mockito.mockStatic(CategoryMapperDTO.class)) {
-            try(MockedStatic<ModelMapperDTO> modelMapperDTOMockedStatic = Mockito.mockStatic(ModelMapperDTO.class)){
-                categoryMapperDTOMockedStatic.when(() -> com.eletra.mapper.CategoryMapperDTO.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
-                modelMapperDTOMockedStatic.when(() -> com.eletra.mapper.ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
+        getRequestMockedStatic.when(() -> GETRequest.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
+        getRequestMockedStatic.when(() -> GETRequest.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
-                mc.createTree(aresLineup);
-                error.checkThat("Check if Main treeView is filled by Categories",mc.rootTreeView.getChildren().isEmpty(),is(false));
-            }
-        }
+        mc.createTree(aresLineup);
+        error.checkThat("Check if Main treeView is filled by Categories",mc.rootTreeView.getChildren().isEmpty(),is(false));
+
     }
 
     @Test
@@ -165,15 +156,12 @@ public class MainControllerTest extends ApplicationTest {
         List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
         List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
 
-        try (MockedStatic<CategoryMapperDTO> categoryMapperDTOMockedStatic = Mockito.mockStatic(CategoryMapperDTO.class)) {
-            try(MockedStatic<ModelMapperDTO> modelMapperDTOMockedStatic = Mockito.mockStatic(ModelMapperDTO.class)){
-                categoryMapperDTOMockedStatic.when(() -> com.eletra.mapper.CategoryMapperDTO.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
-                modelMapperDTOMockedStatic.when(() -> com.eletra.mapper.ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
+        getRequestMockedStatic.when(() -> GETRequest.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
+        getRequestMockedStatic.when(() -> GETRequest.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
-                mc.createTree(aresLineup);
-                error.checkThat("Check if Main treeView is expanded",mc.rootTreeView.isExpanded(),is(true));
-            }
-        }
+        mc.createTree(aresLineup);
+        error.checkThat("Check if Main treeView is expanded",mc.rootTreeView.isExpanded(),is(true));
+
     }
 
     @Test
@@ -188,15 +176,12 @@ public class MainControllerTest extends ApplicationTest {
         List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
         List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
 
-        try (MockedStatic<CategoryMapperDTO> categoryMapperDTOMockedStatic = Mockito.mockStatic(CategoryMapperDTO.class)) {
-            try(MockedStatic<ModelMapperDTO> modelMapperDTOMockedStatic = Mockito.mockStatic(ModelMapperDTO.class)){
-                categoryMapperDTOMockedStatic.when(() -> com.eletra.mapper.CategoryMapperDTO.getListOfCategoriesFrom(lineupDTOS[0])).thenReturn(categoryDTOSList);
-                modelMapperDTOMockedStatic.when(() -> ModelMapperDTO.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
+        getRequestMockedStatic.when(() -> GETRequest.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
+        getRequestMockedStatic.when(() -> GETRequest.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
-                mc.createTree(aresLineup);
-                error.checkThat("Check if Main treeView is empty",mc.treeView.getRoot().getChildren().isEmpty(),is(false));
-            }
-        }
+        mc.createTree(aresLineup);
+        error.checkThat("Check if Main treeView is empty",mc.treeView.getRoot().getChildren().isEmpty(),is(false));
+
     }
 
 }

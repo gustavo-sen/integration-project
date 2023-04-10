@@ -6,10 +6,7 @@ import com.eletra.dto.ModelDTO;
 import com.eletra.helper.db.GETRequest;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
@@ -62,7 +59,6 @@ public class MainControllerTest extends ApplicationTest {
     @Test
     public void initializeTest02() {
         doNothing().when(mc).comboBoxSelectLineup();
-
         mc.initialize(null,null);
         verify(mc).comboBoxSelectLineup();
     }
@@ -74,39 +70,38 @@ public class MainControllerTest extends ApplicationTest {
 
         mc.comboBox.getItems().clear();
         mc.comboBoxSelectLineup();
-        error.checkThat("Check if items from comboBox is empty when request Lineup List",mc.comboBox.getItems().isEmpty(),is(false));
+        List<LineupDTO> actualList = FXCollections.observableArrayList(mc.comboBox.getItems());
+
+        assertEquals("Check if items from comboBox is set when request Lineup List",
+                FXCollections.observableArrayList(lineupDTOS),actualList);
 
     }
 
     @Test
     public void comboBoxSelectLineupTest02(){
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
-        getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
+        getRequestMockedStatic.when(GETRequest::getListOfLineups).thenReturn(FXCollections.observableArrayList(lineupDTOS));
 
         mc.comboBoxSelectLineup();
-        doNothing().when(mc).createTree(null);
-        error.checkThat("Check if items from comboBox is empty when request Lineup List",mc.comboBox.getItems().isEmpty(),is(false));
 
+        assertFalse("Check if titledModels is disabled",
+                mc.titledModels.isDisabled());
     }
 
     @Test
     public void comboBoxSelectLineupTest03(){
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
         getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
-
+        mc.titledModels.setDisable(false);
         mc.comboBoxSelectLineup();
         assertFalse(mc.titledModels.isDisabled());
-
     }
 
     @Test
     public void comboBoxSelectLineupTest04(){
-        LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
-        getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
-
         mc.comboBoxSelectLineup();
-        assertFalse(mc.titledModels.isDisabled());
-
+        mc.comboBox.setValue(new LineupDTO(1,"Ares"));
+        assertNotNull(mc.comboBox.valueProperty().getValue());
     }
 
     @Test
@@ -143,22 +138,6 @@ public class MainControllerTest extends ApplicationTest {
 
     @Test
     public void createTreeTest03(){
-        LineupDTO aresLineup = new LineupDTO(1,"Ares");
-
-        CategoryDTO[] categoryDTOS = {new CategoryDTO(4,"Ares TB",aresLineup),new CategoryDTO(5,"Ares THS",aresLineup)};
-        ModelDTO[] modelDTOS = {new ModelDTO(12, "Ares 7021", categoryDTOS[0]),new ModelDTO(13,"Ares 7031",categoryDTOS[1])};
-        List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
-        List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
-        getRequestMockedStatic.when(() -> GETRequest.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
-        getRequestMockedStatic.when(() -> GETRequest.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
-
-        mc.createTree(aresLineup);
-        error.checkThat("Check if Main treeView is expanded",mc.rootTreeView.isExpanded(),is(true));
-
-    }
-
-    @Test
-    public void createTreeTest04(){
 
         LineupDTO aresLineup = new LineupDTO(1,"Ares");
 

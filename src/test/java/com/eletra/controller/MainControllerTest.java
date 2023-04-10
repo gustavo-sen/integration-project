@@ -27,12 +27,11 @@ import static org.mockito.Mockito.*;
 public class MainControllerTest extends ApplicationTest {
 
     @Rule
-    private ErrorCollector error = new ErrorCollector();
+    public ErrorCollector error = new ErrorCollector();
 
-    @Mock
-    private MockedStatic<GETRequest> getRequestMockedStatic = Mockito.mockStatic(GETRequest.class);
+    MockedStatic<GETRequest> getRequestMockedStatic = Mockito.mockStatic(GETRequest.class);
 
-    MainController mc;
+    public MainController mc;
 
     @Before
     public void setUp() {
@@ -48,6 +47,7 @@ public class MainControllerTest extends ApplicationTest {
     @After
     public void finished() {
         mc = null;
+        getRequestMockedStatic.close();
     }
 
 
@@ -70,7 +70,6 @@ public class MainControllerTest extends ApplicationTest {
     @Test
     public void comboBoxSelectLineupTest01(){
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
-
         getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
 
         mc.comboBox.getItems().clear();
@@ -82,7 +81,6 @@ public class MainControllerTest extends ApplicationTest {
     @Test
     public void comboBoxSelectLineupTest02(){
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
-
         getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
 
         mc.comboBoxSelectLineup();
@@ -94,7 +92,6 @@ public class MainControllerTest extends ApplicationTest {
     @Test
     public void comboBoxSelectLineupTest03(){
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
-
         getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
 
         mc.comboBoxSelectLineup();
@@ -105,7 +102,6 @@ public class MainControllerTest extends ApplicationTest {
     @Test
     public void comboBoxSelectLineupTest04(){
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
-
         getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
 
         mc.comboBoxSelectLineup();
@@ -121,7 +117,6 @@ public class MainControllerTest extends ApplicationTest {
         ModelDTO[] modelDTOS = {new ModelDTO(12, "Ares 7021", categoryDTOS[0]),new ModelDTO(13,"Ares 7031",categoryDTOS[1])};
         List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
         List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
-
         getRequestMockedStatic.when(() -> GETRequest.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
         getRequestMockedStatic.when(() -> GETRequest.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
@@ -138,7 +133,6 @@ public class MainControllerTest extends ApplicationTest {
         ModelDTO[] modelDTOS = {new ModelDTO(12, "Ares 7021", categoryDTOS[0]),new ModelDTO(13,"Ares 7031",categoryDTOS[1])};
         List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
         List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
-
         getRequestMockedStatic.when(() -> GETRequest.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
         getRequestMockedStatic.when(() -> GETRequest.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
@@ -155,7 +149,6 @@ public class MainControllerTest extends ApplicationTest {
         ModelDTO[] modelDTOS = {new ModelDTO(12, "Ares 7021", categoryDTOS[0]),new ModelDTO(13,"Ares 7031",categoryDTOS[1])};
         List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
         List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
-
         getRequestMockedStatic.when(() -> GETRequest.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
         getRequestMockedStatic.when(() -> GETRequest.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 

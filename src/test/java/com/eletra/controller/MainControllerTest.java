@@ -183,12 +183,13 @@ public class MainControllerTest extends ApplicationTest {
                 ,categoryDTOS[0] == treeItem.get(0).getValue(),is(true) );
         error.checkThat("Check if categories position 1 name match given"
                 ,categoryDTOS[1] == treeItem.get(1).getValue(),is(true) );
-
         error.checkThat("Check if model position 0 name match given"
                 , modelDTOS[0].getName() == String.valueOf(treeItem.get(0).getChildren().get(0).getValue()),is(true) );
         error.checkThat("Check if model position 1 name match given"
                 ,modelDTOS[1].getName() == String.valueOf(treeItem.get(0).getChildren().get(1).getValue()),is(true) );
 
+        assertEquals("Check if the title of rootTreeView is matching the Lineup chosen"
+                ,lineupDTOS[0],mc.rootTreeView.getValue());
     }
 
 }

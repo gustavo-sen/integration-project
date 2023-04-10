@@ -3,7 +3,7 @@ package com.eletra.controller;
 import com.eletra.dto.CategoryDTO;
 import com.eletra.dto.LineupDTO;
 import com.eletra.dto.ModelDTO;
-import com.eletra.mapper.*;
+import com.eletra.helper.db.GETRequest;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import org.junit.After;
@@ -46,12 +46,13 @@ public class MainControllerTest extends ApplicationTest {
         mc = null;
     }
 
+
     @Test
     public void initializeTest01() {
         doNothing().when(mc).comboBoxSelectLineup();
         mc.initialize(null, null);
-        assertNotNull("Check if accordion is expanded",mc.accordion.expandedPaneProperty());
         error.checkThat("Checking if titledLineup is disable", mc.titledModels.isDisable(), is(true));
+        assertNotNull("Check if accordion is expanded",mc.accordion.expandedPaneProperty());
 
     }
 
@@ -67,8 +68,8 @@ public class MainControllerTest extends ApplicationTest {
     public void comboBoxSelectLineupTest01(){
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
 
-        try(MockedStatic<LineupMapperDTO> lineupMapperDTOMockedStatic = Mockito.mockStatic(LineupMapperDTO.class)){
-            lineupMapperDTOMockedStatic.when(() -> LineupMapperDTO.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
+        try(MockedStatic<GETRequest> getRequestMockedStatic = Mockito.mockStatic(GETRequest.class)){
+            getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
 
             mc.comboBox.getItems().clear();
             mc.comboBoxSelectLineup();
@@ -80,8 +81,8 @@ public class MainControllerTest extends ApplicationTest {
     public void comboBoxSelectLineupTest02(){
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
 
-        try(MockedStatic<LineupMapperDTO> lineupMapperDTOMockedStatic = Mockito.mockStatic(LineupMapperDTO.class)){
-            lineupMapperDTOMockedStatic.when(() -> LineupMapperDTO.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
+        try(MockedStatic<GETRequest> getRequestMockedStatic = Mockito.mockStatic(GETRequest.class)){
+            getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
 
             mc.comboBoxSelectLineup();
             doNothing().when(mc).createTree(null);
@@ -93,8 +94,8 @@ public class MainControllerTest extends ApplicationTest {
     public void comboBoxSelectLineupTest03(){
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
 
-        try(MockedStatic<LineupMapperDTO> lineupMapperDTOMockedStatic = Mockito.mockStatic(LineupMapperDTO.class)){
-            lineupMapperDTOMockedStatic.when(() -> LineupMapperDTO.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
+        try(MockedStatic<GETRequest> getRequestMockedStatic = Mockito.mockStatic(GETRequest.class)){
+            getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
 
             mc.comboBoxSelectLineup();
             assertFalse(mc.titledModels.isDisabled());
@@ -105,8 +106,8 @@ public class MainControllerTest extends ApplicationTest {
     public void comboBoxSelectLineupTest04(){
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
 
-        try(MockedStatic<LineupMapperDTO> lineupMapperDTOMockedStatic = Mockito.mockStatic(LineupMapperDTO.class)){
-            lineupMapperDTOMockedStatic.when(() -> LineupMapperDTO.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
+        try(MockedStatic<GETRequest> getRequestMockedStatic = Mockito.mockStatic(GETRequest.class)){
+            getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
 
             mc.comboBoxSelectLineup();
             assertFalse(mc.titledModels.isDisabled());

@@ -1,5 +1,10 @@
 package com.eletra.helper.db;
 
+import com.eletra.dto.CategoryDTO;
+import com.eletra.dto.LineupDTO;
+import com.eletra.dto.ModelDTO;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.scene.control.Alert;
 
 import java.io.BufferedReader;
@@ -7,14 +12,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 public class GETRequest {
 
     protected static final String BASE_URL = "http://localhost:8080/api/";
     protected static HttpURLConnection connection = null;
-
-    //entity [lineups,category,models..]
-    //fromFilter [functions like "FROM" operation]
 
     public static String getJsonOfEntities(String entity, String fromFilter) {
         return getJsonFormatted(BASE_URL + "/" + entity + "/" + fromFilter);
@@ -22,6 +25,18 @@ public class GETRequest {
 
     public static String getJsonOfEntities(String entity) {
         return getJsonFormatted(BASE_URL + "/" + entity);
+    }
+
+    public static List<CategoryDTO> getListOfCategoriesFrom(LineupDTO fromEntity){
+        return new Gson().fromJson(GETRequest.getJsonOfEntities("categories",fromEntity.getName()), new TypeToken<List<CategoryDTO>>(){}.getType());
+    }
+
+    public static List<ModelDTO> getListOfModelsFrom(CategoryDTO fromEntity){
+        return new Gson().fromJson(GETRequest.getJsonOfEntities("models",fromEntity.getName()), new TypeToken<List<ModelDTO>>(){}.getType());
+    }
+
+    public static List<LineupDTO> getListOfLineups() {
+        return new Gson().fromJson(GETRequest.getJsonOfEntities("lineups"), new TypeToken<List<LineupDTO>>(){}.getType());
     }
 
     public static String getJsonFormatted(String connectionUrl) {

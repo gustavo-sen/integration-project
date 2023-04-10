@@ -14,5 +14,5 @@ public abstract class AbstractDTO {
         private String name;
         public String toString(){
                 return name;
-        };
+        }
 }

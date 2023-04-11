@@ -3,22 +3,25 @@ package com.eletra.controller;
 import com.eletra.dto.CategoryDTO;
 import com.eletra.dto.LineupDTO;
 import com.eletra.dto.ModelDTO;
-import com.eletra.helper.db.GETRequest;
+import com.eletra.mappers.CategoriesDTOMapper;
+import com.eletra.mappers.CategoriesDTOMapperTest;
+import com.eletra.mappers.LineupDTOMapper;
+import com.eletra.mappers.ModelDTOMapper;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.*;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ErrorCollector;
-import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.testfx.framework.junit.ApplicationTest;
 
-import javax.sound.sampled.Line;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -29,7 +32,9 @@ public class MainControllerTest extends ApplicationTest {
     @Rule
     public ErrorCollector error = new ErrorCollector();
 
-    MockedStatic<GETRequest> getRequestMockedStatic;
+    MockedStatic<LineupDTOMapper> lineupDTOMockedStatic;
+    MockedStatic<CategoriesDTOMapper> categoryDTOMockedStatic;
+    MockedStatic<ModelDTOMapper> modelDTOMockedStatic;
 
     public MainController mc;
 
@@ -43,13 +48,17 @@ public class MainControllerTest extends ApplicationTest {
         mc.accordion = new Accordion();
         mc.rootTreeView = new TreeItem();
 
-        getRequestMockedStatic = Mockito.mockStatic(GETRequest.class);
+        lineupDTOMockedStatic = Mockito.mockStatic(LineupDTOMapper.class);
+        categoryDTOMockedStatic = Mockito.mockStatic(CategoriesDTOMapper.class);
+        modelDTOMockedStatic = Mockito.mockStatic(ModelDTOMapper.class);
     }
 
     @After
     public void finished() {
         mc = null;
-        getRequestMockedStatic.close();
+        lineupDTOMockedStatic.close();
+        categoryDTOMockedStatic.close();
+        modelDTOMockedStatic.close();
     }
 
 
@@ -73,7 +82,7 @@ public class MainControllerTest extends ApplicationTest {
     @Test
     public void comboBoxSelectLineupTest01(){
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
-        getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(FXCollections.observableArrayList(lineupDTOS));
+        lineupDTOMockedStatic.when(LineupDTOMapper::getListOfLineups).thenReturn(FXCollections.observableArrayList(lineupDTOS));
 
         mc.comboBox.getItems().clear();
         mc.comboBoxSelectLineup();
@@ -88,7 +97,7 @@ public class MainControllerTest extends ApplicationTest {
     public void comboBoxSelectLineupTest02(){
 
         LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
-        getRequestMockedStatic.when(GETRequest::getListOfLineups).thenReturn(FXCollections.observableArrayList(lineupDTOS));
+        lineupDTOMockedStatic.when(LineupDTOMapper::getListOfLineups).thenReturn(FXCollections.observableArrayList(lineupDTOS));
 
         doNothing().when(mc).createTree(null);
 
@@ -123,8 +132,8 @@ public class MainControllerTest extends ApplicationTest {
         List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
         List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
 
-        getRequestMockedStatic.when(() -> GETRequest.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
-        getRequestMockedStatic.when(() -> GETRequest.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
+        categoryDTOMockedStatic.when(() -> CategoriesDTOMapper.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
+        modelDTOMockedStatic.when(() -> ModelDTOMapper.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
 
         mc.createTree(aresLineup);
         error.checkThat("Check if TreeView is expanded"
@@ -132,48 +141,19 @@ public class MainControllerTest extends ApplicationTest {
 
     }
 
-/*    @Test
-    public void createTreeTest02(){
-        LineupDTO aresLineup = new LineupDTO(1,"Ares");
-
-        CategoryDTO[] categoryDTOS = {new CategoryDTO(4,"Ares TB",aresLineup),new CategoryDTO(5,"Ares THS",aresLineup)};
-        ModelDTO[] modelDTOS = {new ModelDTO(12, "Ares 7021", categoryDTOS[0]),new ModelDTO(13,"Ares 7031",categoryDTOS[1])};
-        List<CategoryDTO> categoryDTOSList = new ArrayList<>(Arrays.asList(categoryDTOS));
-        List<ModelDTO> modelDTOList = new ArrayList<>(Arrays.asList(modelDTOS));
-        getRequestMockedStatic.when(() -> GETRequest.getListOfCategoriesFrom(aresLineup)).thenReturn(categoryDTOSList);
-        getRequestMockedStatic.when(() -> GETRequest.getListOfModelsFrom(categoryDTOS[0])).thenReturn(modelDTOList);
-
-        TreeItem expectedTreeView = new TreeItem();
-
-        TreeItem<CategoryDTO> categoryDTOTreeItem = (TreeItem<CategoryDTO>) new TreeItem<>(categoryDTOS);
-
-        TreeItem categoryTreeView = new TreeItem(categoryDTOTreeItem);
-
-        TreeItem<ModelDTO> modelDTOTreeItem = (TreeItem<ModelDTO>) new TreeItem<>(modelDTOS);
-
-
-
-        mc.createTree(aresLineup);
-
-        assertEquals("Check if Main treeView is filled by Categories"
-                ,mc.rootTreeView.getChildren()
-                ,expectedTreeView.getChildren()
-                );
-    }
-*/
     @Test
     public void createTreeTest03(){
 
         LineupDTO aresLineup = new LineupDTO(1,"Ares");
-        LineupDTO categoryDTO = new LineupDTO(2,"Cronos");
+        LineupDTO cronosLineup = new LineupDTO(2,"Cronos");
 
-        LineupDTO[] lineupDTOS = {aresLineup, categoryDTO};
+        LineupDTO[] lineupDTOS = {aresLineup, cronosLineup};
         CategoryDTO[] categoryDTOS = {new CategoryDTO(4,"Ares TB",lineupDTOS[0]),new CategoryDTO(5,"Ares THS",lineupDTOS[0])};
         ModelDTO[] modelDTOS = {new ModelDTO(12, "Ares 7021", categoryDTOS[0]),new ModelDTO(13,"Ares 7031",categoryDTOS[1])};
 
-        getRequestMockedStatic.when(() -> GETRequest.getListOfLineups()).thenReturn(Arrays.asList(lineupDTOS));
-        getRequestMockedStatic.when(() -> GETRequest.getListOfCategoriesFrom(aresLineup)).thenReturn(Arrays.asList(categoryDTOS));
-        getRequestMockedStatic.when(() -> GETRequest.getListOfModelsFrom(categoryDTOS[0])).thenReturn(Arrays.asList(modelDTOS));
+        lineupDTOMockedStatic.when(LineupDTOMapper::getListOfLineups).thenReturn(Arrays.asList(lineupDTOS));
+        categoryDTOMockedStatic.when(() -> CategoriesDTOMapper.getListOfCategoriesFrom(aresLineup)).thenReturn(Arrays.asList(categoryDTOS));
+        modelDTOMockedStatic.when(() -> ModelDTOMapper.getListOfModelsFrom(categoryDTOS[0])).thenReturn(Arrays.asList(modelDTOS));
 
         mc.createTree(aresLineup);
 
@@ -184,9 +164,9 @@ public class MainControllerTest extends ApplicationTest {
         error.checkThat("Check if categories position 1 name match given"
                 ,categoryDTOS[1] == treeItem.get(1).getValue(),is(true) );
         error.checkThat("Check if model position 0 name match given"
-                , modelDTOS[0].getName() == String.valueOf(treeItem.get(0).getChildren().get(0).getValue()),is(true) );
+                , Objects.equals(modelDTOS[0].getName(), String.valueOf(treeItem.get(0).getChildren().get(0).getValue())),is(true) );
         error.checkThat("Check if model position 1 name match given"
-                ,modelDTOS[1].getName() == String.valueOf(treeItem.get(0).getChildren().get(1).getValue()),is(true) );
+                , Objects.equals(modelDTOS[1].getName(), String.valueOf(treeItem.get(0).getChildren().get(1).getValue())),is(true) );
 
         assertEquals("Check if the title of rootTreeView is matching the Lineup chosen"
                 ,lineupDTOS[0],mc.rootTreeView.getValue());

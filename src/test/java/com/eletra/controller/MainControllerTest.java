@@ -142,7 +142,7 @@ public class MainControllerTest extends ApplicationTest {
     }
 
     @Test
-    public void createTreeTest03(){
+    public void createTreeTest02(){
 
         LineupDTO aresLineup = new LineupDTO(1,"Ares");
         LineupDTO cronosLineup = new LineupDTO(2,"Cronos");
@@ -159,17 +159,106 @@ public class MainControllerTest extends ApplicationTest {
 
         List<TreeItem<CategoryDTO>> treeItem = FXCollections.observableArrayList(mc.rootTreeView.getChildren());
 
-        error.checkThat("Check if categories position 0 name match given"
-                ,categoryDTOS[0] == treeItem.get(0).getValue(),is(true) );
-        error.checkThat("Check if categories position 1 name match given"
-                ,categoryDTOS[1] == treeItem.get(1).getValue(),is(true) );
-        error.checkThat("Check if model position 0 name match given"
-                , Objects.equals(modelDTOS[0].getName(), String.valueOf(treeItem.get(0).getChildren().get(0).getValue())),is(true) );
-        error.checkThat("Check if model position 1 name match given"
-                , Objects.equals(modelDTOS[1].getName(), String.valueOf(treeItem.get(0).getChildren().get(1).getValue())),is(true) );
+        assertEquals(
+                "Check if categories position 0 name match given"
+                ,categoryDTOS[0]
+                , treeItem.get(0).getValue());
+
+    }
+
+    @Test
+    public void createTreeTest04(){
+
+        LineupDTO aresLineup = new LineupDTO(1,"Ares");
+        LineupDTO cronosLineup = new LineupDTO(2,"Cronos");
+
+        LineupDTO[] lineupDTOS = {aresLineup, cronosLineup};
+        CategoryDTO[] categoryDTOS = {new CategoryDTO(4,"Ares TB",lineupDTOS[0]),new CategoryDTO(5,"Ares THS",lineupDTOS[0])};
+        ModelDTO[] modelDTOS = {new ModelDTO(12, "Ares 7021", categoryDTOS[0]),new ModelDTO(13,"Ares 7031",categoryDTOS[1])};
+
+        lineupDTOMockedStatic.when(LineupDTOMapper::getListOfLineups).thenReturn(Arrays.asList(lineupDTOS));
+        categoryDTOMockedStatic.when(() -> CategoriesDTOMapper.getListOfCategoriesFrom(aresLineup)).thenReturn(Arrays.asList(categoryDTOS));
+        modelDTOMockedStatic.when(() -> ModelDTOMapper.getListOfModelsFrom(categoryDTOS[0])).thenReturn(Arrays.asList(modelDTOS));
+
+        mc.createTree(aresLineup);
+
+        List<TreeItem<CategoryDTO>> treeItem = FXCollections.observableArrayList(mc.rootTreeView.getChildren());
+
+
+        assertEquals("Check if categories position 1 name match given"
+                ,categoryDTOS[1]
+                ,treeItem.get(1).getValue());
+    }
+
+    @Test
+    public void createTreeTest05(){
+
+        LineupDTO aresLineup = new LineupDTO(1,"Ares");
+        LineupDTO cronosLineup = new LineupDTO(2,"Cronos");
+
+        LineupDTO[] lineupDTOS = {aresLineup, cronosLineup};
+        CategoryDTO[] categoryDTOS = {new CategoryDTO(4,"Ares TB",lineupDTOS[0]),new CategoryDTO(5,"Ares THS",lineupDTOS[0])};
+        ModelDTO[] modelDTOS = {new ModelDTO(12, "Ares 7021", categoryDTOS[0]),new ModelDTO(13,"Ares 7031",categoryDTOS[1])};
+
+        lineupDTOMockedStatic.when(LineupDTOMapper::getListOfLineups).thenReturn(Arrays.asList(lineupDTOS));
+        categoryDTOMockedStatic.when(() -> CategoriesDTOMapper.getListOfCategoriesFrom(aresLineup)).thenReturn(Arrays.asList(categoryDTOS));
+        modelDTOMockedStatic.when(() -> ModelDTOMapper.getListOfModelsFrom(categoryDTOS[0])).thenReturn(Arrays.asList(modelDTOS));
+
+        mc.createTree(aresLineup);
+
+        List<TreeItem<CategoryDTO>> treeItem = FXCollections.observableArrayList(mc.rootTreeView.getChildren());
+
+
+        assertEquals("Check if model position 0 name match given"
+                ,modelDTOS[0].getName()
+                , String.valueOf(treeItem.get(0).getChildren().get(0).getValue()));
+    }
+    @Test
+    public void createTreeTest06(){
+
+        LineupDTO aresLineup = new LineupDTO(1,"Ares");
+        LineupDTO cronosLineup = new LineupDTO(2,"Cronos");
+
+        LineupDTO[] lineupDTOS = {aresLineup, cronosLineup};
+        CategoryDTO[] categoryDTOS = {new CategoryDTO(4,"Ares TB",lineupDTOS[0]),new CategoryDTO(5,"Ares THS",lineupDTOS[0])};
+        ModelDTO[] modelDTOS = {new ModelDTO(12, "Ares 7021", categoryDTOS[0]),new ModelDTO(13,"Ares 7031",categoryDTOS[1])};
+
+        lineupDTOMockedStatic.when(LineupDTOMapper::getListOfLineups).thenReturn(Arrays.asList(lineupDTOS));
+        categoryDTOMockedStatic.when(() -> CategoriesDTOMapper.getListOfCategoriesFrom(aresLineup)).thenReturn(Arrays.asList(categoryDTOS));
+        modelDTOMockedStatic.when(() -> ModelDTOMapper.getListOfModelsFrom(categoryDTOS[0])).thenReturn(Arrays.asList(modelDTOS));
+
+        mc.createTree(aresLineup);
+
+        List<TreeItem<CategoryDTO>> treeItem = FXCollections.observableArrayList(mc.rootTreeView.getChildren());
+
+
+        assertEquals("Check if model position 1 name match given"
+                ,modelDTOS[1]
+                ,treeItem.get(0).getChildren().get(1).getValue());
+
+    }
+
+    @Test
+    public void createTreeTest07(){
+
+        LineupDTO aresLineup = new LineupDTO(1,"Ares");
+        LineupDTO cronosLineup = new LineupDTO(2,"Cronos");
+
+        LineupDTO[] lineupDTOS = {aresLineup, cronosLineup};
+        CategoryDTO[] categoryDTOS = {new CategoryDTO(4,"Ares TB",lineupDTOS[0]),new CategoryDTO(5,"Ares THS",lineupDTOS[0])};
+        ModelDTO[] modelDTOS = {new ModelDTO(12, "Ares 7021", categoryDTOS[0]),new ModelDTO(13,"Ares 7031",categoryDTOS[1])};
+
+        lineupDTOMockedStatic.when(LineupDTOMapper::getListOfLineups).thenReturn(Arrays.asList(lineupDTOS));
+        categoryDTOMockedStatic.when(() -> CategoriesDTOMapper.getListOfCategoriesFrom(aresLineup)).thenReturn(Arrays.asList(categoryDTOS));
+        modelDTOMockedStatic.when(() -> ModelDTOMapper.getListOfModelsFrom(categoryDTOS[0])).thenReturn(Arrays.asList(modelDTOS));
+
+        mc.createTree(aresLineup);
+
+        List<TreeItem<CategoryDTO>> treeItem = FXCollections.observableArrayList(mc.rootTreeView.getChildren());
 
         assertEquals("Check if the title of rootTreeView is matching the Lineup chosen"
-                ,lineupDTOS[0],mc.rootTreeView.getValue());
+                ,lineupDTOS[0]
+                ,mc.rootTreeView.getValue());
     }
 
 }

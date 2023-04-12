@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 
 public class LineupDTOMapperTest {
@@ -39,7 +40,7 @@ public class LineupDTOMapperTest {
         List<LineupDTO> expectedCategoryList = Arrays.asList(lineups);
         List<LineupDTO> actualLineupList = LineupDTOMapper.getListOfLineups();
 
-        Assert.assertEquals(expectedCategoryList,actualLineupList);
+        assertEquals(expectedCategoryList,actualLineupList);
 
     }
 

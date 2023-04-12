@@ -112,6 +112,22 @@ public class MainControllerTest extends ApplicationTest {
     @Test
     public void comboBoxSelectLineupTest03(){
 
+        LineupDTO[] lineupDTOS = {new LineupDTO(1,"Ares"), new LineupDTO(2,"Cronos")};
+        lineupDTOMockedStatic.when(LineupDTOMapper::getListOfLineups).thenReturn(FXCollections.observableArrayList(lineupDTOS));
+
+        doNothing().when(mc).createTree(null);
+
+        mc.titledModels.setExpanded(false);
+        mc.comboBoxSelectLineup();
+        mc.comboBox.setValue(new LineupDTO(1,"Ares"));
+
+        assertTrue("Check if titledModels is expanded"
+                ,mc.titledModels.isExpanded());
+    }
+
+    @Test
+    public void comboBoxSelectLineupTest04(){
+
         LineupDTO lineupDTO = new LineupDTO(1,"Ares");
 
         mc.comboBoxSelectLineup();

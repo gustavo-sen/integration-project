@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
@@ -42,7 +43,7 @@ public class CategoriesDTOMapperTest {
         List<CategoryDTO> expectedCategoryList = Arrays.asList(categoryDTOS);
         List<CategoryDTO> actualCategoryList = CategoriesDTOMapper.getListOfCategoriesFrom(aresLineup);
 
-        Assert.assertEquals(expectedCategoryList,actualCategoryList);
+        assertEquals(expectedCategoryList,actualCategoryList);
 
     }
 }

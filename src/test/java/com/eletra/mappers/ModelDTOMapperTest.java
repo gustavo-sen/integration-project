@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
@@ -51,7 +52,7 @@ public class ModelDTOMapperTest {
         List<ModelDTO> expectedModelList = Arrays.asList(modelDTOS);
         List<ModelDTO> actualModelList = ModelDTOMapper.getListOfModelsFrom(categoryDTOS[0]);
 
-        Assert.assertEquals(expectedModelList,actualModelList);
+        assertEquals(expectedModelList,actualModelList);
 
     }
 

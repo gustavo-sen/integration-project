@@ -1,6 +1,6 @@
-stages:          # List of stages for jobs, and their order of execution
-  - build
+stages:   
   - test
+  - build
   - deploy
 
 build-job:       # This job runs in the build stage, which runs first.
@@ -16,15 +16,15 @@ build-job:       # This job runs in the build stage, which runs first.
     paths:
     - target\jfx\native\*.exe
     
-unit-test-job:   # This job runs in the test stage.
-  stage: test    # It only starts when the job in the build stage completes successfully.
+unit-test-job:
+  stage: test    
   script:
     - echo "Running unit tests..."
     - mvn clean test
 
-deploy-job:      
-  stage: deploy
-  script:
-    - echo "Deploying application..."
-    - copy target\jfx\native\*.exe "\\DESKTOP-RMNOSNV\Deploy" 
-    - echo "Aplicação deploiada"
+#deploy-job:      
+#  stage: deploy
+#  script:
+#    - echo "Deploying application..."
+#    - copy target\jfx\native\*.exe "\\DESKTOP-RMNOSNV\Deploy" 
+#    - echo "Aplicação deploiada"

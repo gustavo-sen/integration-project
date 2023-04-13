@@ -6,7 +6,7 @@ stages:          # List of stages for jobs, and their order of execution
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
-    - $Env:JAVA_HOME = 'C:\Java\jdk1.8.0_51'
+    - $Env:JAVA_HOME = 'C:\Java
     - echo $JAVA_HOME
     - echo "Compiling the code..."  
     - mvn clean package

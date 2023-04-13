@@ -21,9 +21,10 @@ unit-test-job:   # This job runs in the test stage.
   script:
     - echo "Running unit tests..."
     - mvn clean test
+
 deploy-job:      
   stage: deploy
   script:
     - echo "Deploying application..."
-    - copy target\jfx\native\*.exe "\\\DESKTOP-RMNOSNV\Deploy" 
+    - copy target\jfx\native\*.exe "\\DESKTOP-RMNOSNV\Deploy" 
     - echo "Aplicação deploiada"

@@ -19,7 +19,7 @@ build-job:       # This job runs in the build stage, which runs first.
 unit-test-job:
   stage: test    
   script:
-    - echo "Running unit tests..."
+    - $Env:JAVA_HOME = 'C:\Java
     - mvn test
 
 #deploy-job:      

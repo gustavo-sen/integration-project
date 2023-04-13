@@ -6,7 +6,7 @@ stages:
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
-    - $Env:JAVA_HOME = 'C:\Java'
+    - $Env:JAVA_HOME = 'C:\SDK\Java\jre1.8.0_51'
     - echo "Compiling the code..."  
     - mvn clean package
     - echo "Compile complete."

@@ -1,6 +1,6 @@
 stages: 
-  - build  
   - test
+  - build  
   - deploy
 
 build-job:       # This job runs in the build stage, which runs first.
@@ -20,11 +20,11 @@ unit-test-job:
   stage: test    
   script:
     - $Env:JAVA_HOME = 'C:\Java
-    - mvn test
+    - mvn clean test
 
-#deploy-job:      
-#  stage: deploy
-#  script:
-#    - echo "Deploying application..."
-#    - copy target\jfx\native\*.exe "\\DESKTOP-RMNOSNV\Deploy" 
-#    - echo "Aplicação deploiada"
+deploy-job:      
+  stage: deploy
+  script:
+    - echo "Deploying application..."
+    - copy target\jfx\native\*.exe "\\DESKTOP-RMNOSNV\Deploy" 
+    - echo "Deploy finshed successfully"

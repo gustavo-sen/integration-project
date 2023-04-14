@@ -82,10 +82,11 @@ public class MainControllerTest extends ApplicationTest {
 
         mc.comboBox.getItems().clear();
         mc.comboBoxSelectLineup();
-        List<LineupDTO> actualList = FXCollections.observableArrayList(mc.comboBox.getItems());
 
         assertEquals("Check if items from comboBox is set when request Lineup List",
-                FXCollections.observableArrayList(lineupDTOS),actualList);
+                FXCollections.observableArrayList(lineupDTOS),
+                mc.comboBox.getItems()
+        );
 
     }
 
@@ -113,14 +114,6 @@ public class MainControllerTest extends ApplicationTest {
         );
         verify(mc,times(1)).createTree(any());
 
-    }
-
-
-    @Test
-    public void comboBoxSelectLineupTest03(){
-        mc.comboBoxSelectLineup();
-        mc.comboBox.setValue(new LineupDTO(1,"Ares"));
-        verify(mc,times(1)).createTree(any());
     }
 
     @Test

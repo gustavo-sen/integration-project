@@ -85,7 +85,7 @@
                     <mainClass>com.eletra.AppMain</mainClass>
                     <vendor>Eletra Energy Solutions</vendor>
                     <verbose>true</verbose>
-                    <appName>Projeto_de_Integracao</appName>
+                    <appName>IntegrationProject-1.0</appName>
                 </configuration>
                 <executions>
                     <execution>

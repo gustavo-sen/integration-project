@@ -173,8 +173,8 @@ public class MainControllerTest extends ApplicationTest {
 
 
         assertEquals("Check if categories position 1 name match given",
-                categoryDTOS[1],
-                treeItem.get(1).getValue());
+                categoryDTOS[1].getName(),
+                String.valueOf(treeItem.get(1).getValue()));
     }
 
     @Test
@@ -195,10 +195,10 @@ public class MainControllerTest extends ApplicationTest {
 
         List<TreeItem<CategoryDTO>> treeItem = mc.rootTreeView.getChildren();
 
-
         assertEquals("Check if model position 0 name match given",
-                modelDTOS[0],
-                treeItem.get(0).getChildren().get(0).getValue());
+                modelDTOS[0].getName(),
+                String.valueOf(treeItem.get(0).getChildren().get(0).getValue()));
+
     }
     @Test
     public void createTreeTest04(){
@@ -220,8 +220,8 @@ public class MainControllerTest extends ApplicationTest {
 
 
         assertEquals("Check if model position 1 name match given",
-                modelDTOS[1],
-                treeItem.get(0).getChildren().get(1).getValue());
+                modelDTOS[1].getName(),
+                String.valueOf(treeItem.get(0).getChildren().get(1).getValue()));
 
     }
 
@@ -244,8 +244,8 @@ public class MainControllerTest extends ApplicationTest {
         List<TreeItem<CategoryDTO>> treeItem = mc.rootTreeView.getChildren();
 
         assertEquals("Check if the title of rootTreeView is matching the Lineup chosen",
-                lineupDTOS[0],
-                mc.rootTreeView.getValue());
+                lineupDTOS[0].getName(),
+                String.valueOf(mc.rootTreeView.getValue()));
     }
 
 }

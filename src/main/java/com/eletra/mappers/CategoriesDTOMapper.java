@@ -11,8 +11,8 @@ import java.util.List;
 public class CategoriesDTOMapper {
 
     public static List<CategoryDTO> getListOfCategoriesFrom(LineupDTO fromEntity){
-        return new Gson().fromJson(GETRequest.getJsonOfEntities("categories"
-                ,fromEntity.getName()), new TypeToken<List<CategoryDTO>>(){}.getType());
+        return new Gson().fromJson(GETRequest.getJsonOfEntities("categories",
+                fromEntity.getName()), new TypeToken<List<CategoryDTO>>(){}.getType());
     }
 
 }

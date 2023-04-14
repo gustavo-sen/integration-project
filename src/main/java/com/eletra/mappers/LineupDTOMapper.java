@@ -10,8 +10,8 @@ import java.util.List;
 public class LineupDTOMapper {
 
     public static List<LineupDTO> getListOfLineups() {
-        return new Gson().fromJson(GETRequest.getJsonOfEntities("lineups")
-                , new TypeToken<List<LineupDTO>>(){}.getType());
+        return new Gson().fromJson(GETRequest.getJsonOfEntities("lineups"),
+                new TypeToken<List<LineupDTO>>(){}.getType());
     }
 
 }

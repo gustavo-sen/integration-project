@@ -11,8 +11,8 @@ import java.util.List;
 public class ModelDTOMapper {
 
     public static List<ModelDTO> getListOfModelsFrom(CategoryDTO fromEntity){
-        return new Gson().fromJson(GETRequest.getJsonOfEntities("models",fromEntity.getName())
-                , new TypeToken<List<ModelDTO>>(){}.getType());
+        return new Gson().fromJson(GETRequest.getJsonOfEntities("models",fromEntity.getName()),
+                new TypeToken<List<ModelDTO>>(){}.getType());
     }
 
 }

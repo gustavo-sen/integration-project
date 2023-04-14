@@ -12,25 +12,25 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class AbstractDTO {
-        private long id;
-        private String name;
-        public String toString(){
-                return name;
+    private long id;
+    private String name;
+    public String toString(){
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
         }
 
-        @Override
-        public boolean equals(Object obj) {
-                if (obj == this) {
-                        return true;
-                }
-
-                if (!(obj instanceof AbstractDTO)) {
-                        return false;
-                }
-
-                AbstractDTO otherObject = (AbstractDTO) obj;
-
-                return Objects.equals(name, otherObject.name)
-                        && Objects.equals(id, otherObject.id);
+        if (!(obj instanceof AbstractDTO)) {
+            return false;
         }
+
+        AbstractDTO otherObject = (AbstractDTO) obj;
+
+        return Objects.equals(name, otherObject.name)
+                && Objects.equals(id, otherObject.id);
+    }
 }

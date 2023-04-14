@@ -1,0 +1,29 @@
+stages: 
+  - test
+  - build  
+  - deploy
+    
+unit-test-job:
+  stage: test    
+  script:
+    - $Env:JAVA_HOME = 'C:\Java'
+    - mvn clean test
+    
+build-job:       # This job runs in the build stage, which runs first.
+  stage: build
+  script:
+    - $Env:JAVA_HOME = 'C:\Java'
+    - echo "Compiling the code..."  
+    - mvn clean package
+    - echo "Compile complete."
+  artifacts:
+    name: "Executavel-Projeto-de-Integracao"
+    paths:
+    - target\jfx\native\*.exe
+
+deploy-job:      
+  stage: deploy
+  script:
+    - echo "Deploying application..."
+    - copy target\jfx\native\*.exe "\\DESKTOP-RMNOSNV\Deploy" 
+    - echo "Deploy finshed successfully"
